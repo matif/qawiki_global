@@ -1,0 +1,59 @@
+
+body{margin: 0; padding: 0; font-family: arial; font-size: 12px}
+h1, h2, h3, h4, ul, li, p, table{margin: 0; padding: 0}
+
+a, a:hover, a:visited{color: #6A84FB; outline: none}
+
+#main{width: 100%; min-height: 400px}
+
+#header{height: 50px; background: #fad42e; font-size: 30px; font-weight: bold; padding: 10px 0 0 40px; color: #fff}
+#header a, #header a:hover, #header a:visited{color: #fff; text-decoration: none}
+
+#sub-nav{height: 28px; background: orange; color: #fff; padding-left: 40px}
+#sub-nav ul{float: left; padding: 5px 0; list-style: none; font-weight: bold; font-size: 13px}
+#sub-nav li{float: left; padding: 0 5px; border-left: 1px solid #fff}
+#sub-nav li.first{border:none}
+#sub-nav li a, #sub-nav li a:visited{display: inline-block; color: #fff; font-style: normal; text-decoration: none}
+#sub-nav li a:hover{color: #fff; font-style: normal; text-decoration: underline}
+
+#content{min-height: 320px}
+
+.content-left{width: 15%; height: 100%; background: #ffe5c3; float: left}
+.content-right{width: 85%; height: 100%; float: left}
+.inner-content{padding: 20px}
+
+.clear{clear: both; margin: 0; padding: 0; line-height: 0; font-size: 0}
+.middle{vertical-align: middle !important}
+
+.data-list{width: 100%; font-size: 12px}
+.data-list th{font-size: 12px; color: #666; background: #f7f7f7}
+.data-list th, .data-list td{padding: 3px}
+.data-list, .data-list th, .data-list td{border: 1px solid #666; border-collapse: collapse}
+.data-list tr.selected{background: #F7F8DF}
+
+.button-link{display: inline-block}
+.button-link a, .button-link a:visited{text-decoration: none; color: #333; display: inline-block; background: #f2f2f2; padding: 5px 12px; border: 1px solid #444; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; text-shadow: none}
+.button-link a:hover{background: #f7f7f7; text-shadow: #aaa 2px 2px 2px}
+
+.actions{padding: 10px 0; text-align: right}
+
+form.constrain label{display: inline-block; min-width: 80px; margin-right: 10px; font-weight: bold}
+form.constrain label.top{vertical-align: top}
+form.constrain div{margin-top: 10px}
+form.constrain .form-option{padding-top: 15px}
+form.constrain .submit{margin-top: 15px}
+form.constrain .radio{padding: 0 0 0 20px}
+form.constrain input[type=radio]{margin-top:5px}
+form.constrain textarea{width:450px; height: 150px}
+form.constrain .heading{margin: 20px 0 0}
+form.constrain textarea, form.constrain input[type=text], form.constrain input[type=password], form.constrain select{border: 1px solid #ccc}
+form.constrain input[type=text], form.constrain input[type=password], form.constrain select{width: 200px}
+
+form.constrain .error{color: #D81F26; font-size:11px; display: inline-block; vertical-align: top; margin-left: 10px}
+
+.mceEditor{margin: 10px 0; display: block}
+
+.placeholder{margin-bottom: 10px}
+.placeholder .email-guide, .placeholder span{display: block}
+.placeholder p{padding: 10px 0}
+.placeholder span{padding: 3px 5px}

@@ -1,0 +1,25 @@
+
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+# You can safely remove this 5 lines block -- it's no longer used in YOURLS
+# RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization},L]
+</IfModule>
+
+
+# BEGIN YOURLS
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([0-9A-Za-z]+)/?$ /yourls/yourls-go.php?id=$1 [L]
+RewriteRule ^store/(.*)/?$ /yourls/yourls-infos.php?store_id=$1 [L]
+RewriteRule ^item\-stats/(.*)/(.*)/?$ /yourls/yourls-infos.php?item_id=$1&item_type=$2 [L]
+RewriteRule ^json\-data/(.*)/(.*)/(.*)/(.*)/(.*)/?$ /yourls/json-data.php?item_id=$1&item_type=$2&start_date=$3&end_date=$4&action_types=$5 [L]
+RewriteRule ^([0-9A-Za-z]+)\+/(.*)/(.*)/?$ /yourls/yourls-infos.php?id=$1&item_id=$2&item_type=$3 [L]
+RewriteRule ^([0-9A-Za-z]+)\+/?$ /yourls/yourls-infos.php?id=$1 [L]
+RewriteRule ^([0-9A-Za-z]+)\+all/?$ /yourls/yourls-infos.php?id=$1&all=1 [L]
+</IfModule>
+# END YOURLS
+

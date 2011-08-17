@@ -1,0 +1,112 @@
+#index
+{
+	overflow:hidden;
+	zoom:1;
+	width:auto;
+}
+
+#main_ad_top
+{
+    text-align: center;
+}
+
+#main_ad_bottom
+{
+    text-align: center;
+}
+
+.ad_square
+{
+    display: -moz-inline-stack;
+    display: inline-block !important;
+    display: inline;
+    border: 1px solid #ccc;
+}
+
+#sale_products_header
+{
+    background-image: url('layout/double_divider_solid.gif');
+    background-position: bottom left;
+    background-repeat: repeat-x;
+    margin-top: 10px;
+    padding-bottom: 7px;
+    width: 560px;
+}
+
+#view_all
+{
+    background-image: url('layout/arrow_right.gif');
+    background-position: center right;
+    background-repeat: no-repeat;
+    float: right;
+    padding-right: 20px;
+    font-size: 8pt;
+    color: #0072bc;
+    text-decoration: none;
+}
+
+#sale_products
+{
+    text-align: center;
+    width: 560px;
+}
+
+.product
+{
+    background-position: 0px 10px;
+    background-repeat: no-repeat;
+    display: -moz-inline-stack;
+    display: inline-block !important;
+    display: inline;
+    margin-top: 5px;
+    margin-left: 12px;
+    margin-right: 12px;
+    width: 150px;
+    text-align: center;
+}
+
+.product .sale
+{
+    float: right;
+    background-image: url('sale_seal.png');
+    background-position: top right;
+    background-repeat: no-repeat;
+    width: 54px;
+    height: 41px !important;
+    height: 54px;
+    margin-top: 5px;
+    padding-top: 13px;
+    margin-bottom: 41px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #09548b;
+    overflow: hidden;
+}
+
+.product .text
+{
+    clear: both;
+}
+
+.product .sale_text
+{
+    font-weight: bold;
+    color: #9e0b0f;
+}
+
+#right_column
+{
+	width: 177px;
+	float: right;
+	display:inline;
+}
+
+#savings
+{
+    border: 1px solid #ccc; 
+    margin-top: 10px; 
+    padding: 10px 0 10px 0;
+    width: 175px;
+}

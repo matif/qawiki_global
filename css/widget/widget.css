@@ -1,0 +1,181 @@
+#qawiki-widget { margin: auto; overflow-x: hidden; overflow-y: auto; font-size: 12px }
+#qawiki-widget img{border: none}
+#qawiki-widget form, .qawiki-blue-box h3, .qawiki-blue-box h4, .qawiki-blue-box h2, .qawiki-blue-box form{margin: 0; padding: 0}
+.qawiki-blue-box a{text-decoration: none}
+
+.qawiki-blue-box .qa-top{background:url(http://qawiki.iserver.purelogics.info/images/widget/gray_box_line_v.gif) repeat-x 0 0; float:left; width: 100%}
+.qawiki-blue-box .qa-top-left{float:left; background:url(http://qawiki.iserver.purelogics.info/images/widget/box_cors.gif) no-repeat -30px 0; width:14px; height:14px;}
+.qawiki-blue-box .qa-top-right{float:right; background:url(http://qawiki.iserver.purelogics.info/images/widget/box_cors.gif) no-repeat -44px 0; width:14px; height:14px;}
+.qawiki-blue-box .qa-center-left{float:left; background:url(http://qawiki.iserver.purelogics.info/images/widget/gray_box_line_h.gif) repeat-y 0px 0; }
+.qawiki-blue-box .qa-center-right{float:left; background:url(http://qawiki.iserver.purelogics.info/images/widget/gray_box_line_h.gif) repeat-y right 0; margin-left:3px;}
+.qawiki-blue-box .qa-center{background-color:#dcdcdc; float:left; margin-right:3px;}
+.qawiki-blue-box .qa-bottom{background:url(http://qawiki.iserver.purelogics.info/images/widget/gray_box_line_v.gif) repeat-x 0 -16px; float:left; width: 100%}
+.qawiki-blue-box .qa-bottom-left{float:left; background:url(http://qawiki.iserver.purelogics.info/images/widget/box_cors.gif) no-repeat -30px -14px; width:14px; height:14px;}
+.qawiki-blue-box .qa-bottom-right{float:right; background:url(http://qawiki.iserver.purelogics.info/images/widget/box_cors.gif) no-repeat -44px -14px; width:14px; height:14px;}
+
+.qawiki-white-box{ margin:0 11px;}
+.qawiki-white-box .qa-wtop{float:left; background-color:#ffffff; width: 100%}
+.qawiki-white-box .qa-wtop-left{float:left; background:url(http://qawiki.iserver.purelogics.info/images/widget/box_cors.gif) no-repeat 0px 0; width:15px; height:15px;}
+.qawiki-white-box .qa-wtop-right{float:right; background:url(http://qawiki.iserver.purelogics.info/images/widget/box_cors.gif) no-repeat -15px 0; width:15px; height:15px;}
+.qawiki-white-box .qa-wcenter{background-color:#ffffff; padding: 0 10px}
+.qawiki-white-box .qa-wbottom{background-color:#ffffff; float:left; width: 100%}
+.qawiki-white-box .qa-wbottom-left{float:left; background:url(http://qawiki.iserver.purelogics.info/images/widget/box_cors.gif) no-repeat 0px -15px; width:15px; height:15px;}
+.qawiki-white-box .qa-wbottom-right{float:right; background:url(http://qawiki.iserver.purelogics.info/images/widget/box_cors.gif) no-repeat -15px -15px; width:15px; height:15px;}
+
+.qawiki-heading{float:left;}
+.qawiki-heading h2{margin:0; padding:0; font-size:18px}
+
+ul.qawiki-reviews{margin:0; padding:0; list-style:none;}
+ul.qawiki-reviews li{margin:0; padding:0; list-style:none; float:left;  background:url(http://qawiki.iserver.purelogics.info/images/widget/sep.gif) 0 center no-repeat;}
+ul.qawiki-reviews li a, ul.qawiki-reviews li a:visited{margin:0; padding:0 5px 0 0; float:left; font-size:11px; height:16px; line-height:16px; display:block; text-decoration:underline}
+ul.qawiki-reviews li a:hover{ text-decoration:none;}
+ul.qawiki-reviews li.first{background:none;}
+
+.qawiki-share{width:320px;float:right; padding-top: 5px}
+.qawiki-fb-like{height:23px;float:left; overflow: hidden}
+.qawiki-share-pane{padding:12px 0 0 0;}
+
+.qawiki-content{ margin:0; padding:0; position: relative}
+/*.qawiki-content-left{ width:152px; text-align:center; float:left; overflow: hidden}*/
+.qawiki-content-left{ width:152px; text-align:center; /*float:left; */overflow: hidden; position: absolute; top: 10px; left: 0px }
+.qawiki-content-right{/* float:right; width: 100%;*/ padding-bottom: 5px; padding-left: 160px; min-height: 111px}
+.qawiki-content-right p{ margin:0; padding:5px 0 0px 0; font-size:11px; line-height:20px}
+
+.qawiki-content-right h3{ margin:0; padding:0 0 0px 0; font-size:14px; font-weight:bold}
+.qawiki-content-right span.qa-answer-count{font-size:11px; font-weight: normal; float: right}
+
+.qawiki-button{list-style-type:none; float: left; margin:5px 5px 5px 0; padding:0 0 0 18px ; background:url(http://qawiki.iserver.purelogics.info/images/widget/btn_normal.png) top left no-repeat #fff !important; height:22px; line-height:22px }
+.qawiki-button a, .qawiki-button a:visited{ background:url(http://qawiki.iserver.purelogics.info/images/widget/btn_normal.png) top right no-repeat !important; display:block; padding:0 18px 0 0; height:22px; line-height:22px; text-decoration:none; font-size:12px; font-family:Tahoma, Geneva, sans-serif; color:#6d6e71 !important}
+div.qawiki-button:hover{ background:url(http://qawiki.iserver.purelogics.info/images/widget/btn_hover.png) top left no-repeat !important; height:22px; line-height:22px }
+.qawiki-button a:hover{ background:url(http://qawiki.iserver.purelogics.info/images/widget/btn_hover.png) top right no-repeat !important; display:block; color:#fff !important; padding:0 18px 0 0; height:22px; line-height:22px; text-decoration:none }
+.qa-button-selected{background: url("http://qawiki.iserver.purelogics.info/images/widget/btn_hover.png") no-repeat scroll left top transparent !important; color: #fff !important}
+.qa-button-selected a,
+.qa-button-selected a:visited,
+.qa-button-selected a:hover {
+  background: url("http://qawiki.iserver.purelogics.info/images/widget/btn_hover.png") no-repeat scroll right top transparent !important; color: #fff !important;
+}
+
+.qawiki-clear { clear: both; margin:0; padding:0; font-size:0; line-height:0; height:0 }
+
+.qawiki-answer{padding:5px 0 0 20px}
+.qawiki-answer .qa-ans-head{color: #5F901D}
+.qawiki-user-name{font-style: italic; font-size:11px !important}
+
+.qawiki-sub-header{padding:10px 0 10px 0}
+.qawiki-sub-header .qa-sub-heading{margin:0; padding:0; color:#0072bc; font-size:30px; float:left; font-family:Georgia, "Times New Roman", Times, serif}
+.qawiki-sub-links{padding:12px 0 10px 0; float:right}
+.qawiki-sub-links ul, .qawiki-sub-links ul li{margin:0; padding:0 0; list-style:none}
+.qawiki-sub-links ul li{margin:0; padding:0 6px; list-style:none; float:left; font-size:12px; font-family:Arial, Helvetica, sans-serif; background:url(http://qawiki.iserver.purelogics.info/images/widget/sep_link.gif) right center no-repeat; font-weight:bold}
+.qawiki-sub-links ul li.qa-sub-first, .qawiki-sub-links ul li.qa-sub-last{background:none; padding-right:0}
+.qawiki-sub-links ul li a, .qawiki-sub-links ul li a:visited{color:#0072bc; text-decoration:none}
+.qawiki-sub-links ul li a:hover{color:#0072bc; text-decoration:underline}
+.qawiki-sub-links ul li a.selected{color:#05386e; text-decoration:underline}
+.qawiki-sub-links ul li a.qawiki-selected{color: #333 !important}
+
+.qawiki-blue-corners{padding:12px 0 7px}
+.qawiki-bluish-cor{height:15px;clear:both; background-color:#e7f2f9;}
+.qawiki-bluish-cor .qa-left-top,
+.qawiki-bluish-cor .qa-right-top,
+.qawiki-bluish-cor .qa-left-bottom,
+.qawiki-bluish-cor .qa-right-bottom {
+  width:15px; height:15px; background:#fff url(http://qawiki.iserver.purelogics.info/images/widget/blue_corners.gif) 0 0 no-repeat;
+}
+.qawiki-bluish-cor .qa-left-top{float:left}
+.qawiki-bluish-cor .qa-left-bottom{float:left; background-position:left bottom}
+.qawiki-bluish-cor .qa-right-top{float:right; background-position:right top}
+.qawiki-bluish-cor .qa-right-bottom{float:right; background-position:right bottom}
+
+.qawiki-bluish-content{padding:0 10px;background-color:#e7f2f9}
+.qawiki-bluish-content p{margin:0; padding:5px 0;	font-size:12px;	font-family:Arial, Helvetica, sans-serif}
+
+.qawiki-bluish-content h2{margin:0; padding:0;	font-size:18px;	line-height:24px;	font-weight:normal;	float:left; font-family: Georgia,"Times New Roman",Times,serif}
+.qawiki-bluish-content h2 a{margin-left:5px; font-size:12px; font-weight:bold}
+
+.qawiki-bluish-content h3{margin:0;padding:0 0 5px 0;color:#0d385a;	font-size:14px;	line-height:19px;	display:block; font-family:Arial, Helvetica, sans-serif}
+.bluish_content h3 a, .bluish_content h3 a:visited{color:#6d6e71 !important; text-decoration:none}
+.bluish_content h3 a:hover{color:#6d6e71 !important; text-decoration:underline;}
+
+.qawiki-add-answer, .qawiki-save-answer{width:106px;	height:22px; float:right}
+.qawiki-add-answer a, .qawiki-save-answer a{width:106px;	height:22px; background:url(http://qawiki.iserver.purelogics.info/images/widget/btn_ad_answer.png) 0 0 no-repeat;	display:block}
+
+.qawiki-input-text{
+	width:100%;	padding:4px 0 1px 0; background:#ffffff url(http://qawiki.iserver.purelogics.info/images/widget/txt_qa_bg.gif) 0 0 repeat-x; height:24px;	line-height:24px;
+	border:none; border-left:1px solid #a5a5a5;	border-right:1px solid #a5a5a5;	border-bottom:1px solid #efefef; font-family:Arial, Helvetica, sans-serif; font-size:12px
+}
+textarea.qawiki-input-text{line-height: 15px; height: 45px}
+
+.qawiki-button-section{padding-top: 10px; display: block}
+
+span.qawiki-expand, span.qawiki-collapse{width:14px; height:14px; margin-right: 5px; display: inline-block}
+span.qawiki-expand {background: url(http://qawiki.iserver.purelogics.info/images/widget/expand.gif) top left no-repeat }
+span.qawiki-collapse {background: url(http://qawiki.iserver.purelogics.info/images/widget/collapse.gif) top left no-repeat }
+
+.qawiki-pagination{text-align: center}
+.qawiki-error{color: #D81F26; font-size:11px}
+.qawiki-success{color: green; font-size:11px}
+
+.qawiki-f11{font-size:11px}
+
+.qawiki-see-more{font-style: italic; text-align: right}
+.qawiki-see-more a{font-size:11px}
+.qawiki-time{font-style: italic}
+
+.qawiki-thumbs-down, .qawiki-thumbs-up, .qawiki-greyed-up, .qawiki-greyed-down {display:inline-block; padding:2px 0 0 22px; height: 17px}
+.qawiki-thumbs-up{background: url(http://qawiki.iserver.purelogics.info/images/widget/thumbs_up.png) top left no-repeat; cursor: pointer}
+.qawiki-thumbs-down{background: url(http://qawiki.iserver.purelogics.info/images/widget/thumbs_down.png) top left no-repeat; cursor: pointer}
+
+.qawiki-greyed-up{background: url(http://qawiki.iserver.purelogics.info/images/widget/thumbs_up_grey.png) top left no-repeat}
+.qawiki-greyed-down{background: url(http://qawiki.iserver.purelogics.info/images/widget/thumbs_down_grey.png) top left no-repeat}
+
+#qawiki-overlay {height: 100%; left: 0; position: fixed; top: 0; width: 100%; z-index: 2001}
+.qawiki-overlay-bg {background-color: #000000; opacity: 0.75}
+#qawiki-window {display: none; left: 50%; position: absolute; z-index: 2002}
+#qawiki-overlay-container {background: #fff; min-height: 100px; min-width:300px; padding: 10px; position: relative}
+#qawiki-overlay-container .qa-popup-close{top:10px; right:10px; position: absolute}
+.qa-overlay-title{width: 90%; font-weight: bold; padding-bottom:5px}
+.qa-overlay-hr{height:1px; line-height: 1px; font-size: 1px; padding: 0; margin: 0; border-top: 1px solid #ccc}
+
+.qawiki-link-products{width: 120px; margin: 0 5px 5px 0; padding: 5px; border:1px solid #ccc; float: left; cursor: pointer}
+.qawiki-linked-prod{height:100px; width: 100%}
+.qawiki-linked-prod td, .qawiki-linked-prod table{text-align: center; vertical-align: middle; height: 100%; width: 100%; font-size:11px}
+.qawiki-search-icon{background: url(http://qawiki.iserver.purelogics.info/images/widget/openSearch.gif) center center no-repeat}
+.qawiki-link-products .qawiki-add, .qawiki-link-products .qawiki-remove{padding: 3px; text-align: center; background: #90B742; color:#fff; text-decoration: underline; font-weight: bold}
+
+.qawiki-categories{width:170px; float:left}
+.qawiki-cat{display:block; padding: 5px; border-bottom: 1px solid #eee; cursor: pointer}
+.qawiki-sub-cat{margin-left: 10px}
+span.qawiki-cat:hover, .qawiki-cat-selected{background: #f2f2f2}
+.qawiki-categories h3{margin: 15px 0 5px}
+
+#qawiki-products{float:left; width: 300px; margin-left: 10px}
+.qawiki-product{display: block; padding: 5px 0; border-bottom: 1px solid #eee}
+.qawiki-product-title{display: inline-block; width: 180px; padding-right: 10px; font-weight: bold}
+.qawiki-product-desc{display: block; padding-top: 5px}
+.qawiki-add-product {display: inline-block}
+.qawiki-add-product a, .qawiki-product-added a{display: inline-block; width: 98px; padding: 5px 3px; text-decoration: none; text-align: center; font-weight: bold; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px}
+.qawiki-add-product a {border: 1px solid #ABDE22; background: #78A22F; color: #fff !important}
+.qawiki-product-added a {border: 1px solid #aaa; background: #999; color: #ccc !important}
+.qawiki-add-product a:hover{background: #90B744}
+.qawiki-product-added a:hover{background: #aaa; border-color: #333}
+
+.qawiki-note{font-size:11px !important; font-style: italic}
+.qawiki-video p{padding: 5px 0 0 10px}
+.qawiki-pl0{padding-left: 0 !important}
+.qawiki-search-text {width: 100%; margin-top: 5px}
+.qawiki-search-button{width: 60px; float: right; margin-top: 5px}
+
+/*.qawiki-details{display: inline-block}*/
+
+.qawiki-rel-prod{position: relative}
+.qawiki-relprod-left{position: absolute; overflow: hidden; width: 75px; height: 100px; top: 5px; left: 0}
+.qawiki-relprod-left img{max-width: 75px; max-height: 75px}
+.qawiki-relprod-img{min-height: 75px; margin-left: 80px; display: inline-block; vertical-align: top}
+
+.qawiki-sort-options{float:right; margin-top: 12px}
+
+.qawiki-search-prod{padding: 10px 0 6px}
+.qawiki-browse{float:right}
+.qawiki-ptitle-wide{width:360px}
+#qaPopup_Desc{display: inline-block; padding-top: 5px}
+
+.qa-top-contributor{background: #dcdcdc; border: 1px solid #ccc; padding: 3px 10px; display: inline-block}
