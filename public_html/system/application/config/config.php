@@ -388,15 +388,21 @@ $config['cart_types'] = array(
 );
 
 $config['csv_fields'] = array(
-  'item id'           => 'Item Id',
-  'item type'         => 'Item Type',
-  'title'             => 'Title',
-  'description'       => 'Description',
-  'link url'          => 'Link URL',
-  'image url'         => 'Image URL',
-  'parent id'         => 'Parent Id' 
+  'category id'       => 'Category Id',
+  'category name'     => 'Category Name',
+  'category url'      => 'Category Url',
+  'brand id'          => 'Brand Id',
+  'brand name'        => 'Brand Name',
+  'brand url'         => 'Brand URL',
+  'product id'        => 'Product Id',
+  'title'             => 'Product Title',
+  'description'       => 'Product Description',
+  'image url'         => 'Product Image',
+  'product url'       => 'Product Url',
+  'parent id'         => 'Parent Category'
+
 );
-  
+
 $config['report_fields'] = array(
   array('id' => 'submitted_questions' , 'title' => 'Number of submitted Questions'),
   array('id' => 'questions_pending'   , 'title' => 'Number of Questions with pending moderation'),

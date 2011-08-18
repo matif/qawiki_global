@@ -7,7 +7,7 @@
 
 <script type="text/javascript">
   var csv_fields = <?php echo json_encode($this->config->item('csv_fields')) ?>;
-  var csv_required = ['product id', 'title', 'description'];
+  var csv_required = ['item id', 'item type', 'title', 'description'];
 </script>
 
 <?php if ($this->session->flashdata('error')): ?>
@@ -21,8 +21,7 @@
   <input type="hidden" name="cols_count" id="cols_count" value="<?php echo csv_columns_count($csv) ?>" />
   <input type="hidden" name="filename" id="filename" value="<?php echo $filename; ?>" />
   <div style="padding-bottom: 10px;">
-<!--    <span class="rpt_content">Process CSV</span>-->
-    
+  
     <div class="btn_upload" style="margin: 0 0 0 0">
       <a id="graph_update" href="javascript:;" onclick="$('#format-csv').submit()">Process CSV</a>
     </div>

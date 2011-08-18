@@ -76,7 +76,8 @@ function include_javascript()
 function validate_csv_header($fields, &$data)
 {
   $required = array(
-    'product id',
+    'item id',
+	'item type',
     'title',
     'description'
   );

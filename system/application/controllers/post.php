@@ -25,17 +25,10 @@ class Post extends qaController
     $this->load->library('form_validation');
     $this->load->library('validation');
 
-    $this->load->model('qa_login', 'login');
     $this->load->model('post_products', 'linked_products');
-    $this->load->model('qa_product', 'product');
-    $this->load->model('qa_brand', 'brand');
-    $this->load->model('qa_catagory', 'category');
-    $this->load->model('qa_teams', 'team');
-    $this->load->model('qa_team_members', 'team_member');
     $this->load->model('groups', 'group');
     $this->load->model('product_groups', 'product_group');
     $this->load->model('team_invites', "invites");
-    $this->load->model('map_product', 'map');
     
     $this->load->helper('widget');
     $this->load->helper('image_helper');
@@ -270,7 +263,8 @@ class Post extends qaController
    */
   function saveCsvData($store_id, $type = 0)
   {
-    $user_role = Permissions::can_edit($store_id, $this->uid);
+
+	$user_role = Permissions::can_edit($store_id, $this->uid);
     
     if($user_role == 'view')
       redirect('moderate/index/'.$store_id);
@@ -279,7 +273,7 @@ class Post extends qaController
     $cols_count = $this->input->post('cols_count');
     
     $path = $this->config->item('csv_upload_path');
-    
+        
     for ($i = 0; $i < $cols_count; $i++)
     {
       $name = 'hid_' . $i;
@@ -290,11 +284,12 @@ class Post extends qaController
     }    
    
     // save uploaded csv
-    require_once(APPPATH.'libraries/products_csv.php');
-    $product_csv = new Products_csv($store_id, $this->uid);    
+    require_once(APPPATH.'libraries/qaCsv.php');
+    $product_csv = new Qa_csv($store_id, $this->uid);    
     $product_csv->store_configuration();
-    $product_csv->process_row($csv_config, 0);
-    
+    $product_csv->process_row($csv_config);
+  
+
     if(!$product_csv->has_error())
     {
       $file = fopen($path . $filename, 'r');
@@ -1086,7 +1081,7 @@ class Post extends qaController
     if($user_role == 'view')
       redirect('moderate/index/'.$store_id);    
 
-    
+
     if(trim($this->input->post("association")))
     {
       $data["association"] =  $this->input->post("association");
@@ -1104,8 +1099,8 @@ class Post extends qaController
             $check = i;
         }
       }
-      require_once(APPPATH.'libraries/products_csv.php');
-      $product_csv = new Products_csv($store_id, $this->uid);
+      require_once(APPPATH.'libraries/qaCsv.php');
+      $product_csv = new Qacsv($store_id, $this->uid);
       $product_csv->store_configuration();
       $path = $this->config->item('csv_upload_path');
       $data['products'] = array();
@@ -1123,7 +1118,7 @@ class Post extends qaController
             {
               $first = false;
               continue;
-            }                        
+            }   
             if(strpos($temp,"category") == true || strpos($temp,"brand") == true || strpos($temp,"product") == true)
             {
                ($previous == $row[$check])? $i++ : $i=0;
@@ -1137,8 +1132,9 @@ class Post extends qaController
             }           
           }          
           $tok = explode("_", $temp);
-          $func_name = "check_".$tok[1]."_map";
-          $id_data [] = null;
+
+		  $func_name = "check_".$tok[1]."_map"; 
+		  $id_data [] = null;
           if($tok[1] != "product")
           {            
             $results = $this->$tok[1]->$func_name($temp,$db_data,$store_id);
@@ -1218,6 +1214,7 @@ class Post extends qaController
    * 
    * 
    */
+   /*
   function saveProductMapping()
   {
     $store_id = $this->input->post('store_id');
@@ -1269,6 +1266,7 @@ class Post extends qaController
     echo $this->db->last_query();
     exit;
   }
+  */
 
   function webInfo($store_id = "",$type ="")
   {
