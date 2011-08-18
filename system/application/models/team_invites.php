@@ -24,7 +24,7 @@ class team_invites extends Model
   {
     $sqlQuery ="SELECT invite.invite_id, invite.qa_team_id, invite.unique_code, invite.email, store.qa_user_id, store.qa_store_name
           FROM team_invites AS invite
-          INNER JOIN qa_team AS team ON invite.qa_team_id =  team.qa_team_id
+          INNER JOIN teams AS team ON invite.qa_team_id =  team.qa_team_id
           INNER JOIN qa_store AS store ON team.qa_store_id = store.qa_store_id          
           WHERE invite.qa_user_id = $uid
       ";
@@ -71,7 +71,7 @@ class team_invites extends Model
     $query = '
       SELECT user.name,user.qa_user_id,invite.email, "invited" as status
       FROM team_invites AS invite
-      INNER JOIN qa_user as user ON user.qa_user_id = invite.qa_user_id
+      INNER JOIN users as user ON user.qa_user_id = invite.qa_user_id
       WHERE invite.qa_team_id = '. $team_id;
     
     return $this->db->query($query)->result_array();

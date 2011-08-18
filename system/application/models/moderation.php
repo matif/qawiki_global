@@ -59,14 +59,14 @@ class moderation extends Model
     $query = '
       SELECT q.*, count(a.qa_post_id) as answers_count, vote_temp.pos_vote, vote_temp.neg_vote, u.name as user_name, count(spam.post_id) as spam_count,
         '.$case.'
-      FROM qa_post q
-      LEFT JOIN qa_post a ON a.qa_parent_id = q.qa_post_id AND a.mod_status = "valid"
+      FROM store_item_posts q
+      LEFT JOIN store_item_posts a ON a.qa_parent_id = q.qa_post_id AND a.mod_status = "valid"
       LEFT JOIN (
         SELECT post_id, SUM(pos_vote) as pos_vote, SUM(neg_vote) as neg_vote
         FROM post_vote
         GROUP BY post_id
       ) as vote_temp ON vote_temp.post_id = q.qa_post_id
-      INNER JOIN qa_user as u ON u.qa_user_id = q.qa_user_id
+      INNER JOIN users as u ON u.qa_user_id = q.qa_user_id
       LEFT JOIN post_spam as spam ON q.qa_post_id = spam.post_id
       WHERE q.qa_store_id = ' . $store_id . '
         AND q.qa_parent_id = 0
@@ -94,8 +94,8 @@ class moderation extends Model
     
     $query = '
       SELECT count(q.qa_post_id) as cnt
-      FROM qa_post q
-      INNER JOIN qa_user as u ON u.qa_user_id = q.qa_user_id
+      FROM store_item_posts q
+      INNER JOIN users as u ON u.qa_user_id = q.qa_user_id
       WHERE q.qa_store_id = ' . $store_id . '
         AND q.qa_parent_id = 0
         '.($item_id ? ' AND q.qa_ref_id = ' . $item_id . ' AND q.qa_post_type = "' . $item_type . '"' : '').'
@@ -120,8 +120,8 @@ class moderation extends Model
   {    
     $query = '
       SELECT a.*, u.name as user_name
-      FROM qa_post a
-      INNER JOIN qa_user as u ON u.qa_user_id = a.qa_user_id
+      FROM store_item_posts a
+      INNER JOIN users as u ON u.qa_user_id = a.qa_user_id
       WHERE a.qa_parent_id = ' . $question_id . '
       LIMIT '.$offset.', '.$limit.'
     ';

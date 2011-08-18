@@ -42,7 +42,7 @@ class Post_history extends Model
     {
       $CI =& get_instance();
       
-      $user = $CI->qa_user->getUserInfo($user);
+      $user = $CI->users->getUserInfo($user);
       if($user)
       {
         $user = $user['name'];

@@ -19,7 +19,7 @@ class qa_login extends MY_Model {
   function qa_login()
   {
 	parent::Model();
-	$this->table = 'qa_user';
+	$this->table = 'users';
 	$this->primary_key = 'qa_user_id';	
   }
   
@@ -31,7 +31,7 @@ class qa_login extends MY_Model {
   
   function login($data)
   {
-     $this->db->insert('qa_user', $data);
+     $this->db->insert('users', $data);
   }
   
   /**
@@ -44,7 +44,7 @@ class qa_login extends MY_Model {
   
   function checkLogin($email,$password)
   {
-    $sqlQuery="SELECT * FROM `qa_user` WHERE `email`='$email' AND `password` = '$password'";
+    $sqlQuery="SELECT * FROM `users` WHERE `email`='$email' AND `password` = '$password'";
     $result=$this->db->query($sqlQuery)->result_array();    
     return $result;
   }
@@ -64,7 +64,7 @@ class qa_login extends MY_Model {
       $this->db->where('qa_user_id <> '.$user_id);
     }
 
-    return $this->db->get('qa_user')->result_array();
+    return $this->db->get('users')->result_array();
   }
   
   /**
@@ -93,7 +93,7 @@ class qa_login extends MY_Model {
   {
     $this->db->set('password' , $input);
     $this->db->where('qa_user_id', $id);
-    $this->db->update('qa_user');
+    $this->db->update('users');
   }
   
   /**
@@ -106,7 +106,7 @@ class qa_login extends MY_Model {
   {
     $this->db->set('password', $pwd);
     $this->db->where('email', $email);
-    $this->db->update('qa_user');
+    $this->db->update('users');
   }
   
   /**
@@ -119,7 +119,7 @@ class qa_login extends MY_Model {
   {
     $this->db->where('qa_user_id', $id);
     $this->db->set('email', $email);
-    $this->db->update('qa_user');
+    $this->db->update('users');
   }
 
   /**
@@ -130,13 +130,13 @@ class qa_login extends MY_Model {
   
   function get_one($id)
   {
-    $this->db->select('qa_user.*');
+    $this->db->select('users.*');
 
     if(isset($id)){	    	
-            $this->db->where('qa_user.qa_user_id', $id);
+            $this->db->where('users.qa_user_id', $id);
     }
 
-    return $this->db->get('qa_user')->result();
+    return $this->db->get('users')->result();
  }
  
  /**
@@ -146,7 +146,7 @@ class qa_login extends MY_Model {
  
  function getUsers()
  {
-   $sqlQuery = "SELECT * FROM qa_user";
+   $sqlQuery = "SELECT * FROM users";
    return $this->db->query($sqlQuery)->result();
  }
  
@@ -158,7 +158,7 @@ class qa_login extends MY_Model {
  
  function checkNameDuplication($name)
  {
-    $sqlQuery= "SELECT * FROM qa_user WHERE `name` = '$name'";
+    $sqlQuery= "SELECT * FROM users WHERE `name` = '$name'";
     $result = $this->db->query($sqlQuery)->result();
     if($result != NULL)
     {
@@ -171,7 +171,7 @@ class qa_login extends MY_Model {
  }
  function checkEmailDuplication($email) 
  {
-    $sqlQuery= "SELECT * FROM qa_user WHERE `email` = '$email' AND `type` != 'widget'";
+    $sqlQuery= "SELECT * FROM users WHERE `email` = '$email' AND `type` != 'widget'";
     $result = $this->db->query($sqlQuery)->result();    
     if($result != NULL)
     {
@@ -184,7 +184,7 @@ class qa_login extends MY_Model {
   }
   function checkEditMailDuplication($email, $user_id)
   {
-    $sqlQuery = "SELECT * FROM qa_user WHERE `email` = '$email' AND `qa_user_id` != '$user_id' AND `type` != 'widget'";
+    $sqlQuery = "SELECT * FROM users WHERE `email` = '$email' AND `qa_user_id` != '$user_id' AND `type` != 'widget'";
     $result = $this->db->query($sqlQuery)->result();    
     if($result != NULL)
     {
@@ -201,20 +201,20 @@ class qa_login extends MY_Model {
     $this->db->where('qa_user_id !='.$user_id );
     $this->db->where('type','customer' );
     $this->db->like('email' , "$userEmail");
-    return $this->db->get('qa_user')->result_array();
+    return $this->db->get('users')->result_array();
   }
  function getUserById($uid)
  {
     $this->db->select('*');
     $this->db->where('qa_user_id' , "$uid");
-    return $this->db->get('qa_user')->result_array();   
+    return $this->db->get('users')->result_array();   
  }
  function getUserIdByEmail($userEmail)
  {
    $this->db->select('qa_user_id');
    $this->db->where('email',$userEmail);
    $this->db->where("type","customer");
-   $data = $this->db->get('qa_user')->result_array();
+   $data = $this->db->get('users')->result_array();
    return $data;
  }
 
@@ -224,10 +224,10 @@ class qa_login extends MY_Model {
     $this->db->where('widget_referer', $url);
     $this->db->where('widget_user_id', $widget_user_id);
 
-    $user = $this->db->get('qa_user')->result_array();
-    if(!$user)
+    $users = $this->db->get('users')->result_array();
+    if(!$users)
     {
-      $this->db->insert('qa_user', array(
+      $this->db->insert('users', array(
         'name'           =>  $nick_name,
         'created'        =>  gmdate('Y-m-d H:i:s'),
         'email'          =>  $widget_user_email,
@@ -242,7 +242,7 @@ class qa_login extends MY_Model {
       );
     }
 
-    return $user[0];
+    return $users[0];
   }
 
   function update_widget_user($user_id, $nickname, $email = '')
@@ -254,46 +254,46 @@ class qa_login extends MY_Model {
     }
     
     $this->db->where('qa_user_id', $user_id);
-    $this->db->update('qa_user');
+    $this->db->update('users');
   }
 
   function getUsersByType($type = 'admin')
   {
     $this->db->where('type', $type);
 
-    return $this->db->get('qa_user')->result_array();
+    return $this->db->get('users')->result_array();
   }
 
   function update_staff($user_id, $data)
   {
     $this->db->where('qa_user_id', $user_id);
 
-    $this->db->update('qa_user', $data);
+    $this->db->update('users', $data);
   }
 
   function delete($id)
   {
-    $this->db->query("DELETE FROM qa_user WHERE qa_user_id = ".$id);
+    $this->db->query("DELETE FROM users WHERE qa_user_id = ".$id);
   }
 
   function getUserInfo($user_id)
   {
     $this->db->select('*');
     $this->db->where('qa_user_id',$user_id);
-    $result =  $this->db->get('qa_user')->result_array();
+    $result =  $this->db->get('users')->result_array();
     return isset($result[0]) ? $result[0] : NULL;
   }
   
   function updateAnswersCount($user_id)
   {
-    $query = "UPDATE qa_user SET total_answers = total_answers + 1 WHERE qa_user_id = ".$user_id;
+    $query = "UPDATE users SET total_answers = total_answers + 1 WHERE qa_user_id = ".$user_id;
     
     $this->db->query($query);
   }
   
   function updateThumbsCount($user_id, $thumb = 'up')
   {
-    $query = "UPDATE qa_user SET thumbs_".$thumb." = thumbs_".$thumb." + 1 WHERE qa_user_id = ".$user_id;
+    $query = "UPDATE users SET thumbs_".$thumb." = thumbs_".$thumb." + 1 WHERE qa_user_id = ".$user_id;
     
     $this->db->query($query);
   }
@@ -302,12 +302,12 @@ class qa_login extends MY_Model {
   {
     $this->db->where("qa_user_id", $user_id); 
     $this->db->where("unique_code", $code); 
-    return $this->db->get("qa_user")->result_array();    
+    return $this->db->get("users")->result_array();    
   }
   
   function update_code($user_id,$data)
   {
     $this->db->where("qa_user_id", $user_id);
-    $this->db->update("qa_user", $data);
+    $this->db->update("users", $data);
   }
 }

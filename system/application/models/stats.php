@@ -378,7 +378,7 @@ class Stats extends Model
       SELECT count(*) as cnt, DATE(qa_created_at) as created_at,
         CASE WHEN (mod_level <> 1 AND mod_status = "valid") THEN "valid" ELSE (CASE WHEN ((mod_level = 1 AND mod_status = "valid") OR mod_status IS NULL) THEN "pending" ELSE "invalid" END) END AS status,
         CASE WHEN (qa_parent_id = 0) THEN "question" ELSE "answer" END AS type
-      FROM qa_post
+      FROM store_item_posts
       WHERE qa_ref_id = '.$item['id'].' AND
         qa_post_type = "'.$type.'"
         '.$this->whereTime().'
@@ -402,7 +402,7 @@ class Stats extends Model
   {
     $query = '
       SELECT count(distinct qa_parent_id) as cnt, DATE(qa_created_at) as created_at
-      FROM qa_post
+      FROM store_item_posts
       WHERE qa_ref_id = '.$item['id'].' AND
         qa_post_type = "'.$type.'" AND
         qa_parent_id > 0
@@ -428,7 +428,7 @@ class Stats extends Model
     /*$query = '
       SELECT count(distinct qa_post_id) as cnt, DATE(qa_created_at) as created_at,
         CASE WHEN (mod_level <> 1 AND mod_status = "valid") THEN "valid_prod_q" ELSE "pending_prod_q" END AS status
-      FROM qa_post
+      FROM store_item_posts
       WHERE qa_parent_id = 0 AND
         qa_post_type = "product" AND
         qa_ref_id IN(
@@ -444,7 +444,7 @@ class Stats extends Model
       SELECT count(distinct p.id) as cnt, DATE(q.qa_created_at) as created_at,
         CASE WHEN (q.mod_level <> 1 AND q.mod_status = "valid") THEN "valid_prod_q" ELSE (CASE WHEN ((q.mod_level = 1 AND q.mod_status = "valid") OR q.mod_status IS NULL) THEN "pending_prod_q" ELSE "invalid_prod_q" END) END AS status
       FROM qa_product p
-      INNER JOIN qa_post q ON p.id = q.qa_ref_id AND q.qa_post_type = "product" AND q.qa_parent_id = 0
+      INNER JOIN store_item_posts q ON p.id = q.qa_ref_id AND q.qa_post_type = "product" AND q.qa_parent_id = 0
       WHERE qa_'.$type.'_id = '.$item['id'].'
         '.$this->whereTime().'
       GROUP BY status, created_at
@@ -467,7 +467,7 @@ class Stats extends Model
   {
     /*$query = '
       SELECT count(distinct qa_parent_id) as cnt, DATE(qa_created_at) as created_at
-      FROM qa_post
+      FROM store_item_posts
       WHERE qa_parent_id > 0 AND
         qa_post_type = "product" AND
         qa_ref_id IN(
@@ -482,7 +482,7 @@ class Stats extends Model
     $query = '
       SELECT count(distinct p.id) as cnt, DATE(q.qa_created_at) as created_at
       FROM qa_product p
-      INNER JOIN qa_post q ON p.id = q.qa_ref_id AND q.qa_post_type = "product" AND q.qa_parent_id > 0
+      INNER JOIN store_item_posts q ON p.id = q.qa_ref_id AND q.qa_post_type = "product" AND q.qa_parent_id > 0
       WHERE qa_'.$type.'_id = '.$item['id'].'
         '.$this->whereTime().'
       GROUP BY created_at
@@ -505,7 +505,7 @@ class Stats extends Model
   {
     /*$query = '
       SELECT count(distinct qa_parent_id) as cnt, DATE(qa_created_at) as created_at
-      FROM qa_post
+      FROM store_item_posts
       WHERE qa_parent_id = 0 AND
         qa_post_type = "category" AND
         qa_ref_id IN(
@@ -520,7 +520,7 @@ class Stats extends Model
     $query = '
       SELECT count(distinct c.id) as cnt, DATE(q.qa_created_at) as created_at
       FROM qa_category c
-      INNER JOIN qa_post q ON c.id = q.qa_ref_id AND q.qa_post_type = "category" AND q.qa_parent_id = 0
+      INNER JOIN store_item_posts q ON c.id = q.qa_ref_id AND q.qa_post_type = "category" AND q.qa_parent_id = 0
       WHERE c.qa_parent_id = '.$item['id'].'
         '.$this->whereTime().'
       GROUP BY created_at

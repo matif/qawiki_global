@@ -32,47 +32,22 @@ class Catalog extends qaController
   {
     $this->store_slot = array(
       'store'            =>  $this->store_data[0],
-      'sub_links'       =>  get_sub_links('settings'),
-      'selected'        =>  'settings',
+      'sub_links'        =>  get_sub_links('settings'),
+      'selected'         =>  'settings',
       'inner_links'      =>  get_inner_links_array('settings'),
       'inner_selected'   =>  'Catalog',
       'drop_down'        =>  $item_type
     );
     
-    $data['category_params'] = parse_pagination_params();
+    $data['items_params'] = parse_pagination_params();
     
     // get records and total count
-    if($item_type == 'categories')
-    {
-      $data['categories'] = $this->category->getCategory($this->store_id, $data['category_params']['offset'], $data['category_params']['rec_per_page']);
-      $data['categories_count'] = $this->category->getCategoryCount($this->store_id);
-      
-      // define pagination params
-      $data['category_params']['total_records'] = $data['categories_count'];
-      pagination_calculate_pages($data['category_params']);
-    }
-    
-    if($item_type == 'brands')
-    {
-      $data['brands'] = $this->brand->getBrand($this->store_id, $data['category_params']['offset'], $data['category_params']['rec_per_page']);
-      $data['brands_count'] = $this->brand->getBrandCount($this->store_id);
-      
-      // define pagination params
-      $data['brand_params'] = parse_pagination_params();
-      $data['brand_params']['total_records'] = $data['brands_count'];
-      pagination_calculate_pages($data['brand_params']);
-    }
-    
-    if($item_type == 'products')
-    {
-      $data['products'] = $this->product->getProduct($this->store_id, $data['category_params']['offset'], $data['category_params']['rec_per_page']);
-      $data['products_count'] = $this->product->getProductCount($this->store_id);
-      
-      // define pagination params
-      $data['product_params'] = parse_pagination_params();
-      $data['product_params']['total_records'] = $data['products_count'];
-      pagination_calculate_pages($data['product_params']);
-    }
+    $data['items'] = $this->store_items_m->getItems($this->store_id, $data['items_params']['offset'], $data['items_params']['rec_per_page']);
+    $data['items_count'] = $this->store_items_m->getItemsCount($this->store_id);
+
+    // define pagination params
+    $data['items_params']['total_records'] = $data['items_count'];
+    pagination_calculate_pages($data['items_params']);
     
     $this->load->view('catalog/index', $data);
   }

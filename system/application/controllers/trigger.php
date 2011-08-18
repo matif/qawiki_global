@@ -25,7 +25,7 @@ class Trigger extends Controller
       $this->db->where('qa_post_type', $tk[1]);
       $this->db->where('qa_ref_id', $tk[0]);
               
-      $this->db->update('qa_post', $data);
+      $this->db->update('store_item_posts', $data);
     }
     
     redirect($next);

@@ -35,12 +35,12 @@
 */
 $active_group = "default";
 $active_record = TRUE;
-if($_SERVER['HTTP_HOST'] == 'qawiki.iserver.purelogics.info')
+if($_SERVER['HTTP_HOST'] == 'qawikiglobal.iserver.purelogics.info')
 {
   
-  $db['default']['username'] = "qawiki";
+  $db['default']['username'] = "qawikiglobal";
   $db['default']['password'] = "pl@123";
-  $db['default']['database'] = "qawiki";
+  $db['default']['database'] = "qawikiglobal";
   $db['default']['hostname'] = "localhost";
 }
 else

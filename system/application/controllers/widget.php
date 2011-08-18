@@ -19,7 +19,7 @@ class Widget extends Controller
     $this->load->model('qa_brand', 'brand');
     $this->load->model('qa_product', 'product');
     $this->load->model('qa_team_members','team_member');
-    $this->load->model('qa_login','qa_user');
+    $this->load->model('qa_login','users');
     $this->load->model('post_vote', 'post_vote');
     $this->load->model('post_products', 'linked_products');
     $this->load->model('widget_users', 'model_widget_user');
@@ -301,7 +301,7 @@ class Widget extends Controller
         $data['mod_status'] = 'valid';
         
         // update answers count
-        $this->qa_user->updateAnswersCount($widget_data['user_id']);
+        $this->users->updateAnswersCount($widget_data['user_id']);
       }
 
       if(isset($_REQUEST['qawiki_video_url']))
@@ -315,7 +315,7 @@ class Widget extends Controller
         $data['email_opt_in'] = 1;
       }
 
-      $this->db->insert('qa_post', $data);
+      $this->db->insert('store_item_posts', $data);
       $post_id = $this->db->insert_id();
 
       // save related products
@@ -341,7 +341,7 @@ class Widget extends Controller
     {
       $nick_name = trim($_REQUEST['qawiki_nickname']);
       $email = isset($_REQUEST['qawiki_email']) ? $_REQUEST['qawiki_email'] : '';
-      $this->qa_user->update_widget_user($widget_data['user_id'], $nick_name, $email);
+      $this->users->update_widget_user($widget_data['user_id'], $nick_name, $email);
 
       session_set_widget_user('user_name', $nick_name);
     }
@@ -409,7 +409,7 @@ class Widget extends Controller
       $user_id = $this->post->isAnswerFromWidgetUser($data['post_id']);
       if($user_id && $user_id != $data['user_id'])
       {
-        $this->qa_user->updateThumbsCount($user_id, $type);
+        $this->users->updateThumbsCount($user_id, $type);
       }
 
       $this->load->model('email_queue');

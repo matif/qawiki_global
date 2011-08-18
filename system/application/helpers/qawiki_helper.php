@@ -1095,7 +1095,7 @@ function triger_designation_milestones($store_id)
   {    
     $CI->db->insert('moderation_groups', $des);     
     if($des["role"] == "creator")
-      $creator_role_id = $CI->db->inser_id();
+      $creator_role_id = $CI->db->insert_id();
   }
   
   return $creator_role_id;

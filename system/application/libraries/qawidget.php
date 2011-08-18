@@ -64,7 +64,7 @@ class qaWidget
     if($question->qa_user_id == $answer['qa_user_id'])
       return false;
 
-    $user = $this->CI->qa_user->getUserById($question->qa_user_id);
+    $user = $this->CI->users->getUserById($question->qa_user_id);
 
     if($user && trim($user[0]['email']))
     {

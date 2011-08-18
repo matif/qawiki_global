@@ -21,7 +21,7 @@ class Widget_new extends Controller
     $this->load->model('qa_brand', 'brand');
     $this->load->model('qa_product', 'product');
     $this->load->model('qa_team_members','team_member');
-    $this->load->model('qa_login','qa_user');
+    $this->load->model('qa_login','users');
     $this->load->model('post_vote', 'post_vote');
     $this->load->model('post_products', 'linked_products');
     $this->load->model('widget_users', 'model_widget_user');
@@ -309,7 +309,7 @@ class Widget_new extends Controller
         $data['mod_status'] = 'valid';
         
         // update answers count
-        $this->qa_user->updateAnswersCount($widget_data['user_id']);
+        $this->users->updateAnswersCount($widget_data['user_id']);
       }
       
       if($type == 'answer')
@@ -317,7 +317,7 @@ class Widget_new extends Controller
         $data['mod_status'] = 'valid';
       }
 
-      $this->db->insert('qa_post', $data);
+      $this->db->insert('store_item_posts', $data);
       $post_id = $this->db->insert_id();
       
       // if type is question, send email to user whose question is answered
@@ -406,7 +406,7 @@ class Widget_new extends Controller
       $user_id = $this->post->isAnswerFromWidgetUser($data['post_id']);
       if($user_id && $user_id != $data['user_id'])
       {
-        $this->qa_user->updateThumbsCount($user_id, $type);
+        $this->users->updateThumbsCount($user_id, $type);
       }
 
       $this->load->model('email_queue');
@@ -643,7 +643,7 @@ class Widget_new extends Controller
     $widget_data = get_complete_widget_session($session_key);
     may_require_exit('failure', ($widget_data['user_id']));
     
-    $data['contributor'] = $this->qa_user->getUserInfo($contributor_id);
+    $data['contributor'] = $this->users->getUserInfo($contributor_id);
     
     $data['details'] = $this->post->getContributorDetail($widget_data['ref_id'], $widget_data['ref_type'], $contributor_id);
     

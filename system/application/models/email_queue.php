@@ -87,8 +87,8 @@ class email_queue extends Model
   function get_vote_data($row)
   {
     $this->db->select('v.pos_vote, v.neg_vote, p.qa_title, p.qa_description, p.qa_ref_id, p.qa_post_type, p.qa_post_id, u.name, u.email, u.qa_user_id');
-    $this->db->join('qa_post p', 'v.post_id = p.qa_post_id');
-    $this->db->join('qa_user u', 'p.qa_user_id = u.qa_user_id');
+    $this->db->join('store_item_posts p', 'v.post_id = p.qa_post_id');
+    $this->db->join('users u', 'p.qa_user_id = u.qa_user_id');
     $this->db->where('vote_id', $row['ref_id']);
     $this->db->where('p.mod_status', "valid");
 
@@ -100,12 +100,12 @@ class email_queue extends Model
   function get_answer_data($row)
   {
     $this->db->select('p.qa_ref_id, p.qa_parent_id, p.qa_post_type, p.qa_post_id, s.qa_title, s.qa_description, u.name, u.email, u.qa_user_id');
-    $this->db->join('qa_post s', 'p.qa_parent_id = s.qa_post_id AND s.email_opt_in = 1');
-    $this->db->join('qa_user u', 's.qa_user_id = u.qa_user_id');
+    $this->db->join('store_item_posts s', 'p.qa_parent_id = s.qa_post_id AND s.email_opt_in = 1');
+    $this->db->join('users u', 's.qa_user_id = u.qa_user_id');
     $this->db->where('p.qa_post_id', $row['ref_id']);
     $this->db->where('p.mod_status', "valid");
 
-    $result = $this->db->get('qa_post p')->result_array();
+    $result = $this->db->get('store_item_posts p')->result_array();
 
     return ($result) ? $result[0] : null;
   }
@@ -113,13 +113,13 @@ class email_queue extends Model
   function get_answer_approved_data($row)
   {
     $this->db->select('p.qa_ref_id, p.qa_parent_id, p.qa_post_type, p.qa_post_id, s.qa_title, s.qa_description, u.name, u.email, u.qa_user_id');
-    $this->db->join('qa_post s', 'p.qa_parent_id = s.qa_post_id');
-    $this->db->join('qa_user u', 'p.qa_user_id = u.qa_user_id');
+    $this->db->join('store_item_posts s', 'p.qa_parent_id = s.qa_post_id');
+    $this->db->join('users u', 'p.qa_user_id = u.qa_user_id');
     $this->db->where('p.qa_post_id', $row['ref_id']);
     $this->db->where('p.qa_parent_id > 0');
     $this->db->where('p.mod_status', "valid");
 
-    $result = $this->db->get('qa_post p')->result_array();
+    $result = $this->db->get('store_item_posts p')->result_array();
 
     return ($result) ? $result[0] : null;
   }
@@ -127,11 +127,11 @@ class email_queue extends Model
   function get_question_approved_data($row)
   {
     $this->db->select('p.qa_ref_id, p.qa_parent_id, p.qa_post_type, p.qa_post_id, p.qa_title, p.qa_description, u.name, u.email, u.qa_user_id');
-    $this->db->join('qa_user u', 'p.qa_user_id = u.qa_user_id');
+    $this->db->join('users u', 'p.qa_user_id = u.qa_user_id');
     $this->db->where('p.qa_post_id', $row['ref_id']);
     $this->db->where('p.mod_status', "valid");
 
-    $result = $this->db->get('qa_post p')->result_array();
+    $result = $this->db->get('store_item_posts p')->result_array();
 
     return ($result) ? $result[0] : null;
   }
@@ -139,12 +139,12 @@ class email_queue extends Model
   function get__data($row)
   {
     $this->db->select('p.qa_ref_id, p.qa_post_type, p.qa_post_id, s.qa_title, s.qa_description, u.name, u.email, u.qa_user_id');
-    $this->db->join('qa_post s', 'p.qa_parent_id = s.qa_post_id');
-    $this->db->join('qa_user u', 's.qa_user_id = u.qa_user_id');
+    $this->db->join('store_item_posts s', 'p.qa_parent_id = s.qa_post_id');
+    $this->db->join('users u', 's.qa_user_id = u.qa_user_id');
     $this->db->where('p.qa_post_id', $row['ref_id']);
     $this->db->where('p.mod_status', "valid");
 
-    $result = $this->db->get('qa_post p')->result_array();
+    $result = $this->db->get('store_item_posts p')->result_array();
 
     return $result[0];
   }

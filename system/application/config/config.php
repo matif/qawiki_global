@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-//error_reporting(E_ALL);
-//ini_set('display_errors', true);
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 /********** Configuration for local host**********************************/
   
 /*
@@ -17,10 +17,10 @@
 
 $config['WIDGET_QUESTION_PER_PAGE'] = 2;
 
-if($_SERVER['HTTP_HOST'] == 'qawiki.iserver.purelogics.info')
+if($_SERVER['HTTP_HOST'] == 'qawikiglobal.iserver.purelogics.info')
 {  
   $config['base_url']	= "http://".$_SERVER['HTTP_HOST']."/";
-  $config['base_url_javascript']	= 'http://qawiki.iserver.purelogics.info/system/application/js/';
+  $config['base_url_javascript']	= 'http://qawikiglobal.iserver.purelogics.info/system/application/js/';
   $config['public_key'] = '6LeoKsMSAAAAAGN-N8zuyByHCvmuIaG1jkiEqK1P';
   $config['private_key'] = '6LeoKsMSAAAAAO9TNO8MivrLUEXDeM00tKDNw3A6';
   $_SERVER["REMOTE_ADDR"] = $_SERVER['HTTP_HOST'].'/index.php/register/signUp';

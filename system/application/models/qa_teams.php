@@ -15,13 +15,13 @@ class qa_teams extends MY_Model {
   {
     parent::Model();
 
-    $this->table = 'qa_team';
+    $this->table = 'teams';
     $this->primary_key = 'qa_team_id';
   }
 
   function addTeam($data)
   {    
-    $this->db->insert('qa_team', $data);
+    $this->db->insert('teams', $data);
 
     return $this->db->insert_id();
   }
@@ -31,15 +31,15 @@ class qa_teams extends MY_Model {
   
     if($offset==0 && $limit==0) {
       $sqlQuery = "SELECT qa.team_name, s.qa_store_name, qa.qa_team_id, tm.role,qa.qa_store_id
-        FROM `qa_team_member` AS tm
-        INNER JOIN qa_team AS qa ON qa.`qa_team_id` = tm.qa_team_id
-        INNER JOIN qa_store AS s ON qa.`qa_store_id` = s.qa_store_id
+        FROM `team_members` AS tm
+        INNER JOIN teams AS qa ON qa.`qa_team_id` = tm.qa_team_id
+        INNER JOIN stores AS s ON qa.`qa_store_id` = s.qa_store_id
         WHERE tm.qa_user_id = ".mysql_escape_string($user_id);
     } else {
       $sqlQuery = "SELECT qa.team_name, s.qa_store_name, qa.qa_team_id, tm.role
-        FROM `qa_team_member` AS tm
-        INNER JOIN qa_team AS qa ON tm.`qa_team_id` = qa.qa_team_id
-        INNER JOIN qa_store AS s ON qa.`qa_store_id` = s.qa_store_id        
+        FROM `team_members` AS tm
+        INNER JOIN teams AS qa ON tm.`qa_team_id` = qa.qa_team_id
+        INNER JOIN stores AS s ON qa.`qa_store_id` = s.qa_store_id        
         WHERE tm.qa_user_id = ".mysql_escape_string($user_id)."
         LIMIT $offset, $limit";
     }
@@ -48,7 +48,7 @@ class qa_teams extends MY_Model {
   function getTeamById($team_id)
   {
     $sqlQuery = "SELECT *
-      FROM `qa_team`
+      FROM `teams`
       WHERE `qa_team_id` = ".mysql_escape_string($team_id)."
     ";
 
@@ -58,8 +58,8 @@ class qa_teams extends MY_Model {
   }  
   function getTeamCount($user_id) {
 	$sqlQuery = "SELECT COUNT( `qa_team_id` ) as CNT
-		FROM `qa_team` AS qa
-		INNER JOIN qa_store AS s ON qa.`qa_store_id` = s.qa_store_id
+		FROM `teams` AS qa
+		INNER JOIN stores AS s ON qa.`qa_store_id` = s.qa_store_id
 		WHERE qa_user_id = ".mysql_escape_string($user_id);	
      $result = $this->db->query($sqlQuery)->result_array();
      $result[0]['CNT'];
@@ -67,17 +67,17 @@ class qa_teams extends MY_Model {
   }
   function updateTeam($data , $team_id){
     $this->db->where('qa_team_id',$team_id);
-    $this->db->update('qa_team',$data);
+    $this->db->update('teams',$data);
   }
   function deleteTeam($qa_team_id){
     //embed_code
-    $this->db->query('Delete FROM qa_team_member WHERE qa_team_id='.$qa_team_id);
-    $this->db->query('Delete FROM qa_team WHERE qa_team_id='.$qa_team_id);	
+    $this->db->query('Delete FROM team_members WHERE qa_team_id='.$qa_team_id);
+    $this->db->query('Delete FROM teams WHERE qa_team_id='.$qa_team_id);	
   }
   function getTeamId($store_id)
   {
     $sqlQuery = "SELECT *
-		FROM `qa_team`
+		FROM `teams`
 		WHERE `qa_store_id` = ".$store_id."
 		";
     $result= $this->db->query($sqlQuery)->result_array();    
@@ -87,7 +87,7 @@ class qa_teams extends MY_Model {
   {
     $this->db->where('qa_store_id',$id);
     $this->db->where('qa_user_id',$uid);
-    $result = $this->db->get('qa_team')->result_array();
+    $result = $this->db->get('teams')->result_array();
     if($result)
       return true;
     else
@@ -97,7 +97,7 @@ class qa_teams extends MY_Model {
   {
     $this->db->select('qa_team_id');
     $this->db->where('qa_store_id',$store_id);
-    return $this->db->get('qa_team')->result_array();
+    return $this->db->get('teams')->result_array();
   }
 }
 ?>

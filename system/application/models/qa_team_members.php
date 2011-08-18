@@ -14,14 +14,14 @@ class qa_team_members extends MY_Model {
   function qa_team_members()   
   {
 	parent::Model();
-	$this->table = 'qa_team_member';
+	$this->table = 'team_members';
 	$this->primary_key = 'qa_team_member_id';		
   }
   
   
   function addTeamMember($data)
   {
-    $this->db->insert('qa_team_member', $data);
+    $this->db->insert('team_members', $data);
     
     $CI =& get_instance();
     $CI->load->model('qa_teams', 'team_model');
@@ -49,11 +49,11 @@ class qa_team_members extends MY_Model {
     //embed_code    
      $this->db->where('qa_team_member_id',$team_member_id);
      $this->db->where('qa_team_id',$team_id);
-     $this->db->update('qa_team_member',$data);     
+     $this->db->update('team_members',$data);     
   }
   function deleteTeamMember($team_member_id, $team_id, $user_id)
   {
-    $sqlQuery = 'Delete FROM qa_team_member WHERE qa_team_member_id='.$team_member_id;
+    $sqlQuery = 'Delete FROM team_members WHERE qa_team_member_id='.$team_member_id;
     $this->db->query($sqlQuery);
     
     $CI =& get_instance();
@@ -85,7 +85,7 @@ class qa_team_members extends MY_Model {
   function getTeamMemberById($team_member_id)
   {
 	$sqlQuery = "SELECT *
-		FROM `qa_team_member` 
+		FROM `team_members` 
 		WHERE qa_team_member_id = ".mysql_escape_string($team_member_id)."
 		";	
     return $this->db->query($sqlQuery)->result();
@@ -94,9 +94,9 @@ class qa_team_members extends MY_Model {
   function getTeamMembers($qa_team_id, $offset, $limit)
   {
 	$sqlQuery = "SELECT qu.name,qam.qa_created, qam.role, qam.notify_me_on_comment, qam.notify_me_on_vote, qt.team_name, qam.qa_team_member_id, qam.qa_team_id,qam.image_url,qam.designation, qu.email
-		FROM `qa_team_member` AS qam
-		INNER JOIN qa_team AS qt ON qt.`qa_team_id` = qam.qa_team_id		
-		INNER JOIN qa_user AS qu ON qu.`qa_user_id` = qam.qa_user_id
+		FROM `team_members` AS qam
+		INNER JOIN teams AS qt ON qt.`qa_team_id` = qam.qa_team_id		
+		INNER JOIN users AS qu ON qu.`qa_user_id` = qam.qa_user_id
 		WHERE qam.qa_team_id = ".mysql_escape_string($qa_team_id)."
 		LIMIT $offset, $limit
 		";
@@ -107,9 +107,9 @@ class qa_team_members extends MY_Model {
   function getTeamMembersCount($qa_team_id) {
     
 	$sqlQuery = "SELECT COUNT( qam.`qa_team_member_id` ) as CNT
-		FROM `qa_team_member` AS qam
-		INNER JOIN qa_team AS qt ON qt.`qa_team_id` = qam.qa_team_id		
-		INNER JOIN qa_user AS qu ON qu.`qa_user_id` = qam.qa_user_id
+		FROM `team_members` AS qam
+		INNER JOIN teams AS qt ON qt.`qa_team_id` = qam.qa_team_id		
+		INNER JOIN users AS qu ON qu.`qa_user_id` = qam.qa_user_id
 		WHERE qam.qa_team_id = ".mysql_escape_string($qa_team_id)."";
 	
      $result = $this->db->query($sqlQuery)->result_array();
@@ -118,7 +118,7 @@ class qa_team_members extends MY_Model {
   }
   function updateStoreStyle($data , $user_id , $team_id)
   {    
-    $sqlQuery = "UPDATE qa_team_member SET `widget_settings`='".$data."' WHERE `qa_user_id`='$user_id' AND `qa_team_id` = '$team_id'";
+    $sqlQuery = "UPDATE team_members SET `widget_settings`='".$data."' WHERE `qa_user_id`='$user_id' AND `qa_team_id` = '$team_id'";
     $this->db->query($sqlQuery);
   }
 
@@ -128,7 +128,7 @@ class qa_team_members extends MY_Model {
     $this->db->where('qa_team_id', $team_id);
     $this->db->limit(1);
 
-    $result = $this->db->get('qa_team_member')->result_array();
+    $result = $this->db->get('team_members')->result_array();
     
     return ($result) ? $result[0] : null;
   }
@@ -138,7 +138,7 @@ class qa_team_members extends MY_Model {
     $this->db->where('qa_team_id', $team_id);
     $this->db->limit(1);
 
-    $result = $this->db->get('qa_team_member')->result_array();
+    $result = $this->db->get('team_members')->result_array();
 
     return ($result) ? $result[0] : null;
   }
@@ -157,7 +157,7 @@ class qa_team_members extends MY_Model {
       $this->db->where('qa_team_id', $team_id);
       $this->db->where_in('qa_user_id', $ids);
 
-      $members = $this->db->get('qa_team_member')->result_array();
+      $members = $this->db->get('team_members')->result_array();
 
       foreach($members as $member)
       {
@@ -177,7 +177,7 @@ class qa_team_members extends MY_Model {
     $this->db->select('role');
     $this->db->where('qa_user_id', $uid);
     $this->db->where('qa_team_id', $team_id);
-    $result = $this->db->get('qa_team_member')->result_array();
+    $result = $this->db->get('team_members')->result_array();
     
     return (isset($result[0]) ? $result[0] : '');
   }
@@ -187,9 +187,9 @@ class qa_team_members extends MY_Model {
     $this->db->select('u.email, u.qa_user_id');
     $this->db->where('tm.qa_team_id', $team_id);
     $this->db->where('tm.notify_me_on_vote', 1);
-    $this->db->join('qa_user u', 'tm.qa_user_id = u.qa_user_id');
+    $this->db->join('users u', 'tm.qa_user_id = u.qa_user_id');
 
-    return $this->db->get('qa_team_member tm')->result_array();
+    return $this->db->get('team_members tm')->result_array();
   }
 
   function getCommentEmailMembers($team_id)
@@ -197,15 +197,15 @@ class qa_team_members extends MY_Model {
     $this->db->select('u.email, u.qa_user_id');
     $this->db->where('tm.qa_team_id', $team_id);
     $this->db->where('tm.notify_me_on_comment', 1);
-    $this->db->join('qa_user u', 'tm.qa_user_id = u.qa_user_id');
+    $this->db->join('users u', 'tm.qa_user_id = u.qa_user_id');
 
-    return $this->db->get('qa_team_member tm')->result_array();
+    return $this->db->get('team_members tm')->result_array();
   }
 //  function deleteTeamMembers($store_id)
 //  {
-//    $sql = 'DELETE FROM qa_team_member
+//    $sql = 'DELETE FROM team_members
 //      WHERE qa_team_id = SELECT qa_team_id
-//      FROM qa_team
+//      FROM teams
 //      WHERE qa_store_id = '.$store_id;
 //
 //    $this->db->query($sql);
@@ -216,15 +216,15 @@ class qa_team_members extends MY_Model {
     $this->db->select("qa_site_name,qa_login_url,qa_thanks_url");
     $this->db->where('qa_team_id',$team_id);
     $this->db->where('qa_team_member_id',$member_id);
-    return $this->db->get("qa_team_member")->result();
+    return $this->db->get("team_members")->result();
   }
 
   function get_web_ring_members($store_id, $type = "",$order_by = "asc" )
   {
     $this->db->select("user.name,user.qa_user_id,team.qa_team_id");
-    $this->db->from("qa_team as team");
-    $this->db->join("qa_team_member as member", "team.qa_team_id = member.qa_team_id");
-    $this->db->join("qa_user as user", "user.qa_user_id = member.qa_user_id");
+    $this->db->from("teams as team");
+    $this->db->join("team_members as member", "team.qa_team_id = member.qa_team_id");
+    $this->db->join("users as user", "user.qa_user_id = member.qa_user_id");
     $this->db->where("qa_store_id",$store_id);
     if($type == "")
       $this->db->where("member.is_active",NULL);
@@ -241,6 +241,6 @@ class qa_team_members extends MY_Model {
   {
     $this->db->where("qa_team_id",$team_id);
     $this->db->where_in("qa_user_id",$in_array);
-    $this->db->update('qa_team_member', $data); 
+    $this->db->update('team_members', $data); 
   }
 }

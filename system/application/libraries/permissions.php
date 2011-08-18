@@ -20,7 +20,7 @@ class Permissions
     $CI->db->select('qa_team_id');
     $CI->db->where('qa_store_id', $store_id);
     $CI->db->limit(1);
-    $result = $CI->db->get('qa_team')->result_array();
+    $result = $CI->db->get('teams')->result_array();
 
     if($result)
     {
@@ -32,7 +32,7 @@ class Permissions
       $CI->db->where('qa_user_id', $user_id);
 
       $CI->db->limit(1);
-      $result = $CI->db->get('qa_team_member')->result_array();
+      $result = $CI->db->get('team_members')->result_array();
       
       if($result)
       {

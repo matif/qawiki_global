@@ -26,104 +26,34 @@
 
 <div class="content_dashboard noborder">
 
-  <?php if (isset($categories)): ?>
-
-    <div class="cate_pan">
-      <div class="heading_section  clearfix"><div class="head nopad" style="width:auto">Categories</div></div>
-      <div class="content_accordian">
-        <div id="categoryPag_data">
-          <?php echo $this->load->view('catalog/_categories') ?>
-        </div>
-
-        <div class="heading_section clearfix">
-          <div class="paginition_area clearfix categoryPag_pagin" style="padding-top:11px">
-
-            <?php
-            echo $this->load->view('components/_pagination', array_merge($category_params, array(
-                        'page_element_id' => 'categoryPag'
-                            )
-                    ));
-            ?>
-
-          </div>					
-        </div>
-
-      </div>
-    </div>
-
-  <?php elseif (isset($brands)): ?>
-
-    <div class="cate_pan">
-      <div class="heading_section  clearfix"><div class="head nopad" style="width:auto">Brands</div></div>
-      <div class="content_accordian">
-        <div id="brandPag_data">
-          <?php echo $this->load->view('catalog/_brands') ?>
-        </div>
-
-        <div class="heading_section clearfix">
-          <div class="paginition_area clearfix brandPag_pagin" style="padding-top:11px">
-
-            <?php
-            echo $this->load->view('components/_pagination', array_merge($brand_params, array(
-                        'page_element_id' => 'brandPag'
-                            )
-                    ));
-            ?>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-<?php endif; ?>
-
-  <div class="cate_pan" <?php echo isset($products) ? '' : 'style="display:none"' ?> id="productsPanel">
+  <div class="cate_pan" id="productsPanel">
     <div class="heading_section  clearfix"><div class="head nopad" style="width:auto">Products</div></div>
     <div class="content_accordian">
+      
       <div id="productPag_data">
-<?php echo (isset($products)) ? $this->load->view('catalog/_products') : '' ?>
+        
+        <?php echo (isset($items)) ? $this->load->view('catalog/_items') : '' ?>
+        
       </div>
 
       <div class="heading_section clearfix">
         <div class="paginition_area clearfix productPag_pagin" style="padding-top:11px">
 
-<?php
-echo (isset($products)) ? $this->load->view('components/_pagination', array_merge($product_params, array(
-                    'page_element_id' => 'productPag'
-                        )
-                )) : '';
-?>
+          <?php 
+            echo (isset($items)) ? $this->load->view('components/_pagination', array_merge($items_params, array(
+                'page_element_id' => 'productPag'
+              )
+            )) : '';
+          ?>
 
         </div>					
       </div>
 
     </div>
   </div>
-  <!--div class="cate_pan">
-    <div class="heading_section  clearfix"><div class="head nopad" style="width:auto">Groups</div></div>
-    <div class="content_accordian">
-      <table class="rpt_area" border="0" cellpadding="0" cellspacing="0">
-        <tbody><tr>
-            <th width="90">Category Id</th>
-            <th>Category Title</th>
-            <th>View Products</th>
-            <th>Get Code</th>
-            <th>View Questions</th>
-            <th>Action</th>
-            <th>URL Stats</th>
-          </tr>
-          <tr>
-            <td colspan="7">No Records Found. <a href="#">Import Catalog.</a></td>
-          </tr>
-        </tbody></table>
-    </div>
-  </div-->
-<!--  <div><input value="" class="btn_save fr mt10" type="button"></div>-->
+  
 </div>
 
-<input type="hidden" id="categoryPag_url" value="<?php echo base_url() . 'catalog/categories/' . $this->store_id ?>" />
-<input type="hidden" id="brandPag_url" value="<?php echo base_url() . 'catalog/brands/' . $this->store_id ?>" />
 <input type="hidden" id="productPag_url" value="<?php echo base_url() . 'catalog/products/' . $this->store_id ?>" />
 
 <div class="pop_container" id="questionDlg" style="display: none"></div>

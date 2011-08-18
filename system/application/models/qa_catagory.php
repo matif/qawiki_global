@@ -90,7 +90,7 @@ class qa_catagory extends Model
   {
     $query = 'SELECT *
       FROM qa_category AS c
-      INNER JOIN qa_post AS q ON c.id = q.qa_ref_id
+      INNER JOIN store_item_posts AS q ON c.id = q.qa_ref_id
       WHERE q.qa_post_type = "category"
         AND c.qa_store_id = '. $store_id;
         $query .= $params;
@@ -109,7 +109,7 @@ class qa_catagory extends Model
       SELECT s.*, c.id, c.qa_category_id as item_id, c.qa_category_name as item_name, t.team_name, t.qa_team_id
       FROM qa_category c
       INNER JOIN qa_store s ON c.qa_store_id = s.qa_store_id
-      INNER JOIN qa_team t ON t.qa_store_id = s.qa_store_id
+      INNER JOIN teams t ON t.qa_store_id = s.qa_store_id
       WHERE c.qa_store_id = " . $store_id . "
         AND c.id = ".$category_id;
 

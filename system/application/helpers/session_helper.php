@@ -14,7 +14,7 @@ function widget_session_by_referer($user_id, $user_email)
       return $data;
     }
 
-    $user = $CI->qa_user->getWidgetUserById($user_id, $user_email, $domain);
+    $user = $CI->users->getWidgetUserById($user_id, $user_email, $domain);
 
     $CI->session->set_userdata($domain, $user);
 

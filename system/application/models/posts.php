@@ -88,7 +88,7 @@ class Posts extends Model
 
   function addPost($data)
   {
-    $this->db->insert('qa_post', $data);
+    $this->db->insert('store_item_posts', $data);
     
     if(isset($data['qa_parent_id']) && $data['qa_parent_id'] > 0)
     {
@@ -130,7 +130,7 @@ class Posts extends Model
     {
       $this->db->select('p.qa_post_id, p.qa_title, p.qa_description, p.qa_created_at, p.qa_user_id, u.name, v.vote_id,p.image_url,p.video_url, p.video_caption, p.qa_parent_id');
       
-      $this->db->join('qa_user as u', 'u.qa_user_id = p.qa_user_id', 'inner');
+      $this->db->join('users as u', 'u.qa_user_id = p.qa_user_id', 'inner');
       $this->db->join('post_vote as v', 'v.post_id = p.qa_post_id  AND v.user_id = '.$user_id, 'left');
     }
     else
@@ -141,7 +141,7 @@ class Posts extends Model
     $this->db->offset($offset);
     $this->db->limit($limit);
     
-    $result = $this->db->get('qa_post as p')->result_array();
+    $result = $this->db->get('store_item_posts as p')->result_array();
     
     return  $result;
   }
@@ -171,7 +171,7 @@ class Posts extends Model
     else
       $this->db->where('mod_status', $mod_status);
     
-    $result = $this->db->get('qa_post')->result_array();
+    $result = $this->db->get('store_item_posts')->result_array();
     
     return $result[0]['cnt'];
   }
@@ -179,13 +179,13 @@ class Posts extends Model
   
   function deletePost($id)
   {
-    $sqlQuery = "DELETE FROM qa_post WHERE qa_post_id = $id LIMIT 1";
+    $sqlQuery = "DELETE FROM store_item_posts WHERE qa_post_id = $id LIMIT 1";
     $this->db->query($sqlQuery);
   }
 
   function getPostCount($store_id)
   {
-    $sqlQuery = "SELECT COUNT(qa_post_id) as CNT FROM qa_post WHERE qa_store_id = $store_id";
+    $sqlQuery = "SELECT COUNT(qa_post_id) as CNT FROM store_item_posts WHERE qa_store_id = $store_id";
     $result = $this->db->query($sqlQuery)->result_array();
 
     return $result[0]['CNT'];
@@ -206,15 +206,15 @@ class Posts extends Model
     $query = '
       SELECT p.*, count(a.qa_post_id) as total_answers, v.vote_id, vote_temp.pos_vote, vote_temp.neg_vote, u.name,
         '.$case.'
-      FROM qa_post p
-      LEFT JOIN qa_post a ON a.qa_parent_id = p.qa_post_id AND a.mod_status = "valid"
+      FROM store_item_posts p
+      LEFT JOIN store_item_posts a ON a.qa_parent_id = p.qa_post_id AND a.mod_status = "valid"
       LEFT JOIN post_vote v ON v.post_id = p.qa_post_id AND v.user_id = '.$user_id.'
       LEFT JOIN (
         SELECT post_id, SUM(pos_vote) as pos_vote, SUM(neg_vote) as neg_vote
         FROM post_vote
         GROUP BY post_id
       ) as vote_temp ON vote_temp.post_id = p.qa_post_id
-      INNER JOIN qa_user as u ON u.qa_user_id = p.qa_user_id
+      INNER JOIN users as u ON u.qa_user_id = p.qa_user_id
       WHERE p.qa_ref_id = ' . $ref_id . '
         AND p.qa_post_type = "' . $ref_type . '"
         AND p.qa_parent_id = 0
@@ -247,7 +247,7 @@ class Posts extends Model
     {
       $query = '
         SELECT count(*) as total_quest
-        FROM qa_post p
+        FROM store_item_posts p
         WHERE p.qa_ref_id = ' . $ref_id . '
           AND p.qa_post_type = "' . $ref_type . '"
           AND p.qa_parent_id = '.$post_id.'
@@ -259,7 +259,7 @@ class Posts extends Model
     {
       $query = '
         SELECT count(distinct p.qa_parent_id) as total_quest
-        FROM qa_post p
+        FROM store_item_posts p
         WHERE p.qa_ref_id = ' . $ref_id . '
           AND p.qa_post_type = "' . $ref_type . '"
           AND p.qa_parent_id > 0
@@ -271,7 +271,7 @@ class Posts extends Model
     {
       $query = '
         SELECT count(p.qa_post_id) as total_quest
-        FROM qa_post p
+        FROM store_item_posts p
         WHERE p.qa_ref_id = ' . $ref_id . '
           AND p.qa_post_type = "' . $ref_type . '"
           AND p.qa_parent_id = 0
@@ -279,7 +279,7 @@ class Posts extends Model
           AND p.mod_level <> 1
           AND p.qa_post_id NOT IN (
             SELECT distinct(qa_parent_id) as qa_parent_id
-            FROM qa_post
+            FROM store_item_posts
             WHERE qa_ref_id = ' . $ref_id . '
               AND qa_post_type = "' . $ref_type . '"
               AND qa_parent_id > 0
@@ -305,7 +305,7 @@ class Posts extends Model
 
   function getPostById($post_id,$paren_id ='')
   {
-     $sqlQuery = "SELECT * FROM qa_post WHERE qa_post_id = $post_id";     
+     $sqlQuery = "SELECT * FROM store_item_posts WHERE qa_post_id = $post_id";     
      $result = $this->db->query($sqlQuery)->result();
      if($result == NULL)
        $result = 0;
@@ -314,7 +314,7 @@ class Posts extends Model
   function updatePost($post_id , $data)
   {
     $this->db->where('qa_post_id',$post_id);
-    $this->db->update('qa_post',$data);
+    $this->db->update('store_item_posts',$data);
   }
   function updateModeratoin($id, $mod_status, $mod_level)
   {
@@ -326,7 +326,7 @@ class Posts extends Model
       $this->db->set('mod_level', $mod_level);
     }
 
-    $this->db->update('qa_post');    
+    $this->db->update('store_item_posts');    
   }
   function getSpamPostCategory($id , $parent_id = 0, $offset = 0, $limit = 100)
   {
@@ -334,7 +334,7 @@ class Posts extends Model
     `p`.`qa_created_at`, `p`.`qa_user_id`, `p`.`image_url`, `cat`.`qa_category_name`,`s`.`id`,cat.qa_category_id
     FROM `qa_store` as store
     INNER JOIN `qa_category` as cat ON `store`.`qa_store_id` = `cat`.`qa_store_id`
-    INNER JOIN `qa_post` as p ON `p`.`qa_ref_id` = `cat`.`id` AND p.qa_post_type = 'category' AND `p`.`mod_status` = 'valid'";
+    INNER JOIN `store_item_posts` as p ON `p`.`qa_ref_id` = `cat`.`id` AND p.qa_post_type = 'category' AND `p`.`mod_status` = 'valid'";
      if($parent_id != 0)
      {
       $sql.= "AND p.qa_parent_id > 0 ";
@@ -356,7 +356,7 @@ class Posts extends Model
       SELECT count(`p`.`qa_post_id`)AS CNT
       FROM `qa_store` as store
       INNER JOIN `qa_category` as cat ON `store`.`qa_store_id` = `cat`.`qa_store_id`
-      INNER JOIN `qa_post` as p ON `p`.`qa_ref_id` = `cat`.`id` AND p.qa_post_type = 'category' AND `p`.`mod_status` = 'valid'";
+      INNER JOIN `store_item_posts` as p ON `p`.`qa_ref_id` = `cat`.`id` AND p.qa_post_type = 'category' AND `p`.`mod_status` = 'valid'";
 
     if($parent_id != 0)
     {
@@ -382,7 +382,7 @@ class Posts extends Model
     `p`.`qa_created_at`, `p`.`qa_user_id`, `p`.`image_url`,`s`.`id`,brand.qa_brand_id,brand.qa_brand_name
     FROM `qa_store` as store
     INNER JOIN `qa_brand` as brand ON `store`.`qa_store_id` = `brand`.`qa_store_id`
-    INNER JOIN `qa_post` as p ON `p`.`qa_ref_id` = `brand`.`id` AND p.qa_post_type = 'brand' AND `p`.`mod_status` = 'valid'";
+    INNER JOIN `store_item_posts` as p ON `p`.`qa_ref_id` = `brand`.`id` AND p.qa_post_type = 'brand' AND `p`.`mod_status` = 'valid'";
      if($parent_id != 0)
      {
       $sql.= "AND p.qa_parent_id > 0 ";
@@ -403,7 +403,7 @@ class Posts extends Model
      $sql = "SELECT count(`p`.`qa_post_id`)AS CNT
     FROM `qa_store` as store
     INNER JOIN `qa_brand` as brand ON `store`.`qa_store_id` = `brand`.`qa_store_id`
-    INNER JOIN `qa_post` as p ON `p`.`qa_ref_id` = `brand`.`id` AND p.qa_post_type = 'brand' AND `p`.`mod_status` = 'valid'";
+    INNER JOIN `store_item_posts` as p ON `p`.`qa_ref_id` = `brand`.`id` AND p.qa_post_type = 'brand' AND `p`.`mod_status` = 'valid'";
      if($parent_id != 0)
      {
       $sql.= "AND p.qa_parent_id > 0 ";
@@ -424,7 +424,7 @@ class Posts extends Model
     `p`.`qa_created_at`, `p`.`qa_user_id`, `p`.`image_url`,`s`.`id`,product.qa_product_id,product.qa_product_title
     FROM `qa_store` as store
     INNER JOIN `qa_product` as product ON `store`.`qa_store_id` = `product`.`qa_store_id`
-    INNER JOIN `qa_post` as p ON `p`.`qa_ref_id` = `product`.`id` AND p.qa_post_type = 'product' AND `p`.`mod_status` = 'valid'";
+    INNER JOIN `store_item_posts` as p ON `p`.`qa_ref_id` = `product`.`id` AND p.qa_post_type = 'product' AND `p`.`mod_status` = 'valid'";
      if($parent_id != 0)
      {
       $sql.= "AND p.qa_parent_id > 0 ";
@@ -445,7 +445,7 @@ class Posts extends Model
      $sql = "SELECT count(`p`.`qa_post_id`)AS CNT
     FROM `qa_store` as store
     INNER JOIN `qa_product` as product ON `store`.`qa_store_id` = `product`.`qa_store_id`
-    INNER JOIN `qa_post` as p ON `p`.`qa_ref_id` = `product`.`id` AND p.qa_post_type = 'product' AND `p`.`mod_status` = 'valid'";
+    INNER JOIN `store_item_posts` as p ON `p`.`qa_ref_id` = `product`.`id` AND p.qa_post_type = 'product' AND `p`.`mod_status` = 'valid'";
      if($parent_id != 0)
      {
       $sql.= "AND p.qa_parent_id > 0 ";
@@ -489,15 +489,15 @@ class Posts extends Model
     $query = '
       SELECT p.*, count(a.qa_post_id) as total_answers, v.vote_id, vote_temp.pos_vote, vote_temp.neg_vote, u.name,
         '.$case.'
-      FROM qa_post p
-      LEFT JOIN qa_post a ON a.qa_parent_id = p.qa_post_id AND a.mod_status = "valid" AND a.mod_level <> 1
+      FROM store_item_posts p
+      LEFT JOIN store_item_posts a ON a.qa_parent_id = p.qa_post_id AND a.mod_status = "valid" AND a.mod_level <> 1
       LEFT JOIN post_vote v ON v.post_id = p.qa_post_id AND v.user_id = '.$user_id.'
       LEFT JOIN (
         SELECT post_id, SUM(pos_vote) as pos_vote, SUM(neg_vote) as neg_vote
         FROM post_vote
         GROUP BY post_id
       ) as vote_temp ON vote_temp.post_id = p.qa_post_id
-      INNER JOIN qa_user as u ON u.qa_user_id = p.qa_user_id
+      INNER JOIN users as u ON u.qa_user_id = p.qa_user_id
       WHERE 
         (
           (
@@ -546,7 +546,7 @@ class Posts extends Model
       $query = '
         SELECT count(*) as total_quest
         FROM qa_product prod
-        INNER JOIN qa_post p ON prod.id = p.qa_ref_id AND p.qa_post_type = "product"
+        INNER JOIN store_item_posts p ON prod.id = p.qa_ref_id AND p.qa_post_type = "product"
         WHERE prod.'.($ref_type == 'category' ? 'qa_category_id' : 'qa_brand_id').' = ' . $ref_id . '
           AND p.qa_parent_id = '.$post_id.'
           AND p.mod_status = "valid"
@@ -558,7 +558,7 @@ class Posts extends Model
       $query = '
         SELECT count(distinct qa_parent_id) as total_quest
         FROM qa_product prod
-        INNER JOIN qa_post p ON prod.id = p.qa_ref_id AND p.qa_post_type = "product"
+        INNER JOIN store_item_posts p ON prod.id = p.qa_ref_id AND p.qa_post_type = "product"
         WHERE prod.'.($ref_type == 'category' ? 'qa_category_id' : 'qa_brand_id').' = ' . $ref_id . '
           AND qa_post_type = "' . $ref_type . '"
           AND qa_parent_id > 0
@@ -571,7 +571,7 @@ class Posts extends Model
       $query = '
         SELECT count(qa_post_id) as total_quest
         FROM qa_product prod
-        INNER JOIN qa_post p ON prod.id = p.qa_ref_id AND p.qa_post_type = "product"
+        INNER JOIN store_item_posts p ON prod.id = p.qa_ref_id AND p.qa_post_type = "product"
         WHERE prod.'.($ref_type == 'category' ? 'qa_category_id' : 'qa_brand_id').' = ' . $ref_id . '
           AND qa_parent_id = 0
           AND mod_status = "valid"
@@ -579,7 +579,7 @@ class Posts extends Model
           AND qa_post_id NOT IN (
             SELECT distinct(ip.qa_parent_id) as qa_parent_id
             FROM qa_product iprod
-            INNER JOIN qa_post ip ON iprod.id = ip.qa_ref_id AND ip.qa_post_type = "product"
+            INNER JOIN store_item_posts ip ON iprod.id = ip.qa_ref_id AND ip.qa_post_type = "product"
             WHERE iprod.'.($ref_type == 'category' ? 'qa_category_id' : 'qa_brand_id').' = ' . $ref_id . '
               AND qa_parent_id > 0
               AND mod_status = "valid"
@@ -604,7 +604,7 @@ class Posts extends Model
   function getReportByPostId($ref_id,$type,$from,$to)
   {
      $query = "SELECT COUNT(*) AS `numrows`, DATE_FORMAT(`qa_created_at`,'%Y-%m-%d')AS Date
-          FROM (`qa_post`)
+          FROM (`store_item_posts`)
           WHERE `qa_ref_id` = '$ref_id'
          AND `qa_post_type` = '$type'
           AND `qa_created_at` BETWEEN '$from' AND '$to' GROUP BY DATE_FORMAT(`qa_created_at`,'%Y-%m-%d')";
@@ -619,7 +619,7 @@ class Posts extends Model
     $this->db->where('mod_status', 'valid');
     $this->db->where('mod_level <> 1');
 
-    $res = $this->db->get('qa_post')->result_array();
+    $res = $this->db->get('store_item_posts')->result_array();
 
     return $res[0]['cnt'];
   }
@@ -628,7 +628,7 @@ class Posts extends Model
   {
     $this->db->where('qa_post_type',$type);   
     $this->db->where('qa_ref_id',$category_id);
-    $this->db->delete('qa_post');
+    $this->db->delete('store_item_posts');
   }
   
   function isAnswerFromWidgetUser($post_id)
@@ -637,7 +637,7 @@ class Posts extends Model
     $this->db->where('qa_post_id', $post_id);
     $this->db->where('qa_parent_id > 0');
     
-    $row = $this->db->get('qa_post')->result_array();
+    $row = $this->db->get('store_item_posts')->result_array();
     
     return ($row) ? $row[0]['qa_user_id'] : 0;
   }
@@ -653,7 +653,7 @@ class Posts extends Model
   {
     $query = '
       SELECT vote_temp.pos_vote, vote_temp.neg_vote
-      FROM qa_post p
+      FROM store_item_posts p
       LEFT JOIN (
         SELECT post_id, SUM(pos_vote) as pos_vote, SUM(neg_vote) as neg_vote
         FROM post_vote
@@ -690,7 +690,7 @@ class Posts extends Model
     {
       $query = '
         SELECT COUNT(*) as cnt
-        FROM qa_post p
+        FROM store_item_posts p
         LEFT JOIN (
           SELECT post_id, SUM(pos_vote) as pos_vote, SUM(neg_vote) as neg_vote
           FROM post_vote
@@ -733,7 +733,7 @@ class Posts extends Model
     {
       $query = '
         SELECT COUNT(*) as cnt
-        FROM qa_post p
+        FROM store_item_posts p
         LEFT JOIN (
           SELECT post_id, SUM(pos_vote) as pos_vote, SUM(neg_vote) as neg_vote
           FROM post_vote
@@ -775,7 +775,7 @@ class Posts extends Model
   function count_unmoderated_question($store_id)
   {
     $query = 'SELECT count(*) as cnt, CASE WHEN qa_parent_id > 0 THEN "answer" ELSE "question" END AS post_type
-      FROM qa_post
+      FROM store_item_posts
       WHERE qa_store_id = '.$store_id.' AND
         (mod_status IS NULL OR (mod_status = "valid" AND mod_level = 1))
       GROUP BY post_type
@@ -799,7 +799,7 @@ class Posts extends Model
   function get_per_month_question_volume($store_id)
   {
     $query = 'SELECT count(*) as cnt, DATE_FORMAT(qa_created_at, "%Y-%m") as created_at
-      FROM qa_post
+      FROM store_item_posts
       WHERE qa_store_id = '.$store_id.'
       GROUP BY created_at
     ';
@@ -830,7 +830,7 @@ class Posts extends Model
     $this->db->where('qa_store_id', $store_id);
     $this->db->where('qa_title like "'.mysql_escape_string($search_term).'%"');
     
-    return $this->db->get('qa_post')->result_array();
+    return $this->db->get('store_item_posts')->result_array();
   }
   
   /**
@@ -852,7 +852,7 @@ class Posts extends Model
     
     $this->db->limit(10);
     
-    $rows = $this->db->get('qa_post')->result_array();
+    $rows = $this->db->get('store_item_posts')->result_array();
     
     if(empty($rows) && $ref_type == 'product')
     {
@@ -876,7 +876,7 @@ class Posts extends Model
 
         $this->db->limit(10);
 
-        $rows = $this->db->get('qa_post')->result_array();
+        $rows = $this->db->get('store_item_posts')->result_array();
       }
     }
     
@@ -899,7 +899,7 @@ class Posts extends Model
     $this->db->where('qa_store_id', $store_id);
     $this->db->where_in('qa_post_id', $questions);
     
-    $this->db->update('qa_post', array('mod_status'  =>  $status));
+    $this->db->update('store_item_posts', array('mod_status'  =>  $status));
     
     foreach($questions as $question)
     {
@@ -924,7 +924,7 @@ class Posts extends Model
     $this->db->where('qa_post_type', $ref_type);
     $this->db->where('qa_user_id', $contributor_id);
     
-    $rows = $this->db->get('qa_post')->result_array();
+    $rows = $this->db->get('store_item_posts')->result_array();
     
     $result = array();
     

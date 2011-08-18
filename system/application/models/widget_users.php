@@ -68,7 +68,7 @@ class widget_users extends Model
     $this->db->where_in('w.ref_id', $ref_id);
     $this->db->where('w.ref_type', $ref_type);
 
-    $this->db->join('qa_user u', 'u.qa_user_id = w.user_id AND u.total_answers >= '.$contibutors);
+    $this->db->join('users u', 'u.qa_user_id = w.user_id AND u.total_answers >= '.$contibutors);
 
     $this->db->orderby('rating desc');
     $this->db->limit($this->config->item('top_contributors_limit'));

@@ -36,7 +36,7 @@
     <div class="head setting">Store Settings</div>
   </div>
 
-  <form action="<?php echo (isset($store_info[0]) ? base_url() . 'post/createStore/update/' . $store_info[0]->qa_store_id : base_url() . 'post/createStore') ?>"  method="post" id="productFrm" class="form-cont">
+  <form action="<?php echo (isset($store_info[0]) ? base_url() . 'post/createStore/update/' . $store_info[0]->qa_store_id : base_url() . 'index.php/post/createStore') ?>"  method="post" id="productFrm" class="form-cont">
 
     <div class="content_accordian">
       <div id="content_1" class="disp_content_white">
