@@ -91,7 +91,7 @@ function save_edit_item(element)
       $container.slideUp("fast");
       $container.remove();
       var tds = $me.find('td');
-      $(tds[1]).html(data.id);
+      $(tds[1]).html(data.item_id);
       $(tds[2]).html(data.title);
       if(typeof data.description != 'undefined')
         $(tds[3]).html(data.description);

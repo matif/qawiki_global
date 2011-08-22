@@ -1,6 +1,6 @@
 <?php
 
-class Qa_csv
+class qaCsv
 {
   private $file_path;
   private $cron;
@@ -11,14 +11,14 @@ class Qa_csv
   private $fields;
   private $save_images_locally;
   private $products = array();
-
+	
   function __construct($store_id, $user_id, $file = '', $cron = false)
   {
     $this->store_id = $store_id;
     $this->user_id = $user_id;
     $this->file_path = $file;
     $this->cron = $cron;
-    $this->CI =& get_instance();
+    $this->CI =& get_instance();	
   } 
 
   function process()
@@ -41,19 +41,20 @@ class Qa_csv
     $this->save_images_locally = $this->CI->store->imageOption($this->store_id);
   }
   
-  function process_row($data, &$check)
+  function process_row($data, $check)
   {   
-
+	
+    
     if ($check == 0)
     {
-      
       $this->fields = array_map('trim', $data);      
       $this->fields = array_map('strtolower', $this->fields);
       
       $this->fields = array_flip($this->fields);      
-      // validate csv header
+ 
+	  // validate csv header
       validate_csv_header($this->fields, $data);
-      
+     
       if (isset($data['error']))
       {
         $this->error = $data['error'];
@@ -62,21 +63,22 @@ class Qa_csv
       $check++;
       
     }
-    elseif (isset($this->fields['product id']) && trim($data[$this->fields['product id']]))
-    {      
-      $data = array_map('trim', $data);      
-      
-      $product_exists = $this->CI->product->product_exists($this->store_id, $data[$this->fields['product id']]);
-      
-      
+	elseif (isset($this->fields['item id']) && trim($data[$this->fields['item id']]))
+    { 
+	  $data = array_map('trim', $data);      
+     
+     // $product_exists = $this->CI->product->product_exists($this->store_id, $data[$this->fields['item id']]);
       
       // save product
-      $image_path = $this->save_image($data);
+      //$image_path = $this->save_image($data);
 
       // save product
-      if (!$product_exists)
+      //if (!$product_exists)
+	  if ($data)
       {
-        $product_id = $this->save_product($data, $brand_id, $category_id, $image_path);
+		
+        //$product_id = $this->save_product($data, $brand_id, $category_id, $image_path);
+	 	$product_id = $this->save_product($data);	
         var_dump($product_id);
       }
       else
@@ -114,22 +116,26 @@ class Qa_csv
   * @param <int>     $image_path
   *
   */
-  private function save_product($data, $brand_id, $category_id, $image_path)
+  private function save_product($data)
   {
+	  
     $save_product = array(
-      'qa_store_id' => $this->store_id,
-      'user_id'     => $this->user_id,
-      'qa_product_id' => $data[$this->fields['product id']],
-      'qa_product_title' => $data[$this->fields['title']],
-      'qa_product_description' => $data[$this->fields['description']],
-      'qa_brand_id' => $brand_id,
-      'qa_category_id' => $category_id,
-      'product_image' => $image_path,
-      'product_url' => (isset($this->fields['product url']) && trim($this->fields['product url'])) ? $data[$this->fields['product url']] : '',
-      'created_at'  => date('Y-m-d H:i:s')
+		'store_id'	=> $this->store_id,
+		'user_id'    	=> $this->user_id,
+		'item_id' 	=> $data[$this->fields['item id']],
+		'item_type' 	=> $data[$this->fields['item type']],
+		'title' 	=> $data[$this->fields['title']],
+		'description' 	=> $data[$this->fields['description']],
+		'link_url' 	=>  (isset($this->fields['link url']) && trim($this->fields['link url'])) ? $data[$this->fields['link url']] : '',
+		'image_url' 	=> $data[$this->fields['image url']],
+		'parent_id' 	=> $data[$this->fields['parent id']],
+      	'linked_id' 	=> '',
+      	'created_at'  	=> date('Y-m-d H:i:s')
     );
-    return $this->CI->product->addProduct($save_product);
+    return $this->CI->store_items_m->addCsvProduct($save_product);
   }
+  
+  
  /**
   * function has_error
   *

@@ -1,5 +1,4 @@
-
-<?php $row = isset($this->store_slot['store']) ? (array)$this->store_slot['store'] : array();?>
+<?php  $row = isset($this->store_slot['store']) ? (array)$this->store_slot['store'] : array();?>
 
 <div class="main_nav_area clearfix">
   
@@ -34,13 +33,13 @@
 
       <?php foreach($this->store_slot['inner_links'] as $inner_link):?>
     
-        <?php $drp = top_nav_drop_down($inner_link['text'], (isset($this->store_slot['drop_down']) ? $this->store_slot['drop_down'] : ''));?>
+        <?php $drp = top_nav_drop_down($inner_link['text'], $row['qa_store_id'], (isset($this->store_slot['drop_down']) ? $this->store_slot['drop_down'] : ''));?>
     
-        <li class="<?php echo ($this->store_slot['inner_selected'] == $inner_link['text']) ? 'export' : ''?> <?php echo trim($drp) ? 'tooltip' : ''?>">
+        <li class="<?php echo ($this->store_slot['inner_selected'] == $inner_link['text']) ? 'export' : ''?> <?php echo $drp ? 'tooltip' : ''?>">
           
           <a href="<?php echo parse_dynamic_vars($inner_link['url'], $row)?>"><?php echo $inner_link['text']?></a>
           
-          <?php echo parse_dynamic_vars($drp, $row);?>
+          <?php echo $drp;?>
           
         </li>
     

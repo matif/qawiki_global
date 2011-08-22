@@ -28,7 +28,7 @@ class Catalog extends qaController
    * @param <string>   $item_type
    * 
    */
-  function index($store_id, $item_type = 'categories')
+  function index($store_id, $item_type = '')
   {
     $this->store_slot = array(
       'store'            =>  $this->store_data[0],
@@ -42,8 +42,8 @@ class Catalog extends qaController
     $data['items_params'] = parse_pagination_params();
     
     // get records and total count
-    $data['items'] = $this->store_items_m->getItems($this->store_id, $data['items_params']['offset'], $data['items_params']['rec_per_page']);
-    $data['items_count'] = $this->store_items_m->getItemsCount($this->store_id);
+    $data['items'] = $this->store_items_m->getItems($this->store_id, $item_type, $data['items_params']['offset'], $data['items_params']['rec_per_page']);
+    $data['items_count'] = $this->store_items_m->getItemsCount($this->store_id , $item_type);
 
     // define pagination params
     $data['items_params']['total_records'] = $data['items_count'];
@@ -104,34 +104,17 @@ class Catalog extends qaController
    * 
    * 
    */
-  function products($store_id, $item_id = null, $item_type = null)
+  function products($store_id, $item_type = null, $item_id = null)
   {
     $params = parse_pagination_params();
     $params['page_element_id'] = 'productPag';
 
-    // get records and total count
-    if(!$item_id)
-    {
-      $products = $this->product->getProduct($this->store_id, $params['offset'], $params['rec_per_page']);
-      $params['total_records'] = $this->product->getProductCount($this->store_id);
-    }
-    else
-    {
-      if($item_type == 'category')
-      {
-        $products = $this->product->getProductByCategoryId($item_id, $params['offset'], $params['rec_per_page']);
-        $params['total_records'] = $this->product->getCountProductByCategoryId($item_id, $params['offset'], $params['rec_per_page']);
-      }
-      else
-      {
-        $products = $this->product->getProductByBrandId($item_id, $params['offset'], $params['rec_per_page']);
-        $params['total_records'] = $this->product->getCountProductByBrandId($item_id, $params['offset'], $params['rec_per_page']);
-      }
-    }
+		$products = $this->store_items_m->getItems($this->store_id, $item_type, $params['offset'], $params['rec_per_page']);
+		$params['total_records'] = $this->store_items_m->getItemsCount($this->store_id, $item_type);
     
     pagination_calculate_pages($params);
         
-    $data['data'] = $this->load->view('catalog/_products', array('products' => $products), true);
+    $data['data'] = $this->load->view('catalog/_items', array('items' => $products), true);
     $data['pagination'] = $this->load->view('components/_pagination', $params, true);
     
     render_json_response($data);
@@ -143,7 +126,26 @@ class Catalog extends qaController
    * 
    * 
    */
+   
   function editItem($store_id, $item_id, $item_type)
+  {
+    $this->no_layout = true;
+    
+    $itemInfo = $this->store_items_m->getProductById($this->store_id, $item_id);
+    
+    if(isset($itemInfo[0]))
+    {
+      $itemInfo = $itemInfo[0];
+    }
+    
+    $data['itemInfo'] = $itemInfo;
+    $data['item_id'] = $item_id;
+    $data['item_type'] = $item_type;
+    
+    $this->load->view('catalog/editItem', $data);
+  }
+   
+ /* function editItem($store_id, $item_id, $item_type)
   {
     $this->no_layout = true;
     
@@ -170,7 +172,7 @@ class Catalog extends qaController
     $data['item_type'] = $item_type;
     
     $this->load->view('catalog/editItem', $data);
-  }
+  }*/
   
   /**
    * 
@@ -178,12 +180,40 @@ class Catalog extends qaController
    * 
    * 
    */
+   
   function saveEditItem()
   {
     $this->no_layout = true;
     
-    $item_id = $this->input->post('item_id');
-    $item_type = $this->input->post('item_type');
+    $id			= $this->input->post('id');
+    $item_type	= $this->input->post('item_type');
+    
+    $response = array(
+      'item_id'      => trim($this->input->post('item_id')),
+      'title'        => trim($this->input->post('itemTitle'))
+    );
+      $response['description']  = trim($this->input->post('itemDescription'));
+      
+      $data = array(
+        'item_id'      => $response['item_id'],
+        'title'        => $response['title'],
+        'description'  => $response['description']
+      );
+      
+      $this->store_items_m->updateProduct($id, $data);
+    
+    
+    render_json_response($response);
+  }
+   
+   
+   
+ /* function saveEditItem()
+  {
+    $this->no_layout = true;
+    
+    $item_id	= $this->input->post('item_id');
+    $item_type	= $this->input->post('item_type');
     
     $response = array(
       'id'           => trim($this->input->post('itemRemoteId')),
@@ -220,7 +250,7 @@ class Catalog extends qaController
     }
     
     render_json_response($response);
-  }
+  }*/
   
   /**
    * 
@@ -294,10 +324,11 @@ class Catalog extends qaController
   function process_ftp_file($store_id, $file_name = "" )
   {
     require_once(APPPATH.'libraries/products_csv.php');    
+		
     if(isset($_FILES["upload_csv"]) && $_FILES["upload_csv"]["tmp_name"] != "")
     {
-      $dir_path = $file_name = $this->config->item('root_dir').'/ftp_user/'.$store_id."/";
-      
+			$dir_path = $file_name = $this->config->item('root_dir').'/ftp_user/'.$store_id."/";
+
       if(!file_exists($dir_path))
         mk_dir ($dir_path);     
       
@@ -306,10 +337,9 @@ class Catalog extends qaController
       move_uploaded_file($_FILES["upload_csv"]["tmp_name"], $dir_path);      
       
       $product_csv = new Products_csv($store_id, $this->uid, $dir_path, true); 
-      $product_csv->process();  
-      echo 1;
-      exit;
-      
+      $product_csv->process();
+			echo 1;
+			exit;
     }
     if($file_name != "")
       $file_name = $this->config->item('root_dir').'/ftp_user/'.$store_id.'/'.$file_name.".csv";

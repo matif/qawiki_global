@@ -689,21 +689,55 @@ function get_inner_links_array($type)
  * 
  * 
  */
-function top_nav_drop_down($text, $drop_down)
+function top_nav_drop_down($text, $store_id , $drop_down)
 {
+
   $options = '';
-  
+
   if($text == 'Catalog')
   {
-    $options = '<span class="custom-dp">
-        <span class="custom-dp-item"><a rel="categories" href="javascript:;" '.($drop_down == 'categories' ? 'class="item-sel"' : '').' onclick="location.href=\''.base_url().'catalog/index/{qa_store_id}/categories\'">Categories</a></span>
-        <span class="custom-dp-item"><a rel="brands" href="javascript:;" '.($drop_down == 'brands' ? 'class="item-sel"' : '').' onclick="location.href=\''.base_url().'catalog/index/{qa_store_id}/brands\'">Brands</a></span>
-        <span class="custom-dp-item"><a rel="products" href="javascript:;" '.($drop_down == 'products' ? 'class="item-sel"' : '').' onclick="location.href=\''.base_url().'catalog/index/{qa_store_id}/products\'">Products</a></span>
-      </span>';
+   $itemTypes = get_store_item_types($store_id);
+
+    $options .= '<span class="custom-dp">';
+		
+        foreach($itemTypes as $items){				
+            $options	.= '<span class="custom-dp-item"><a rel="'.$items['item_type'].'" href="javascript:;" '.($drop_down == $items['item_type'] ? 'class="item-sel"' : '').' onclick="location.href=\''.base_url().'catalog/index/'.$store_id.'/'.$items['item_type'].'\'"><span class="custom_dp_item_cap">'.$items['item_type'].'</span></a></span>';					
+        }
+		
+    $options .= '</span>'; 
+   
   }
+	else if($text != 'Catalog')
+  {
+			 $store_id = 0;
+	}
   
   return $options;
 }
+
+
+/**
+ * 
+ * function get_store_item_types
+ * 
+ * @param <string>     $store_id
+ * 
+ */
+
+ function get_store_item_types($store_id)
+  {
+    
+		 $CI =& get_instance();
+     
+     $CI->db->distinct();
+     $CI->db->select('item_type');     
+     $CI->db->where('store_id', $store_id);     
+     $CI->db->orderby('item_type', 'ASC');
+    
+     return $CI->db->get('store_items')->result_array();
+  }
+
+
 /**
  * 
  * function store_list_redirect_url

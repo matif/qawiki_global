@@ -16,7 +16,7 @@
   <br/>
 
 <?php endif; ?>
-<form id="format-csv" action="<?php echo (isset($association) && trim($association)) ? base_url() . 'post/linkProducts/' . $store_id : base_url() . 'post/saveCsvData/' . $store_id ?>" method="post">
+<form id="format-csv" action="<?php echo (isset($association) && trim($association)) ? base_url() . 'post/saveCsvData/' . $store_id : base_url() . 'post/saveCsvData/' . $store_id ?>" method="post">
 
   <input type="hidden" name="cols_count" id="cols_count" value="<?php echo csv_columns_count($csv) ?>" />
   <input type="hidden" name="filename" id="filename" value="<?php echo $filename; ?>" />

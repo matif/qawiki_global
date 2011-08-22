@@ -1,5 +1,5 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-error_reporting(E_ALL);
+error_reporting(0);
 ini_set('display_errors', true);
 /********** Configuration for local host**********************************/
   

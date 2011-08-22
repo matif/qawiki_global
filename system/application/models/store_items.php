@@ -19,17 +19,24 @@ class store_items extends Model
     parent::Model();
   }
   
+  function addCsvProduct($data)
+  {
+    $this->db->insert('store_items', $data);
+    return $this->db->insert_id();
+  }
+  
+  
   function addProduct($data)
   {
-    $this->db->insert('qa_product', $data);
+    $this->db->insert('store_items', $data);
     return $this->db->insert_id();
   }
   
   function product_exists($store_id , $id)
   {
-    $this->db->where('qa_product_id', $id);
-    $this->db->where('qa_store_id', $store_id);
-    $result = $this->db->get('qa_product')->result_array();
+    $this->db->where('id', $id);
+    $this->db->where('store_id', $store_id);
+    $result = $this->db->get('store_items')->result_array();
 
     if(!$result || count($result) == 0)
     {
@@ -54,14 +61,13 @@ class store_items extends Model
    * return list of items
    * 
    */
-  function getItems($store_id , $offset = 0, $limit = 10, $all = false, $sort_column = 'id', $sort_order = 'asc')
+  function getItems($store_id, $item_type, $offset = 0, $limit = 10, $all = false, $sort_column = 'id', $sort_order = 'asc')
   {
-    $this->db->where('qa_store_id', $store_id);
+    $this->db->where('store_id', $store_id);
 
-    if(!$all)
+    if($item_type)
     {
-      $this->db->where('qa_brand_id', 0);
-      $this->db->where('qa_category_id', 0);
+      $this->db->where('item_type', $item_type);
     }
 
     $this->db->orderby($sort_column.' '.$sort_order);
@@ -85,20 +91,19 @@ class store_items extends Model
    * return count of items
    * 
    */
-  function getItemsCount($store_id, $all = false, $filter_text = '')
+  function getItemsCount($store_id, $item_type, $all = false, $filter_text = '')
   {
-    $this->db->select('COUNT(qa_product_id) as CNT');
-    $this->db->where('qa_store_id', $store_id);
+    $this->db->select('COUNT(id) as CNT');
+    $this->db->where('store_id', $store_id);
 
-    if(!$all)
+    if($item_type)
     {
-      $this->db->where('qa_brand_id', 0);
-      $this->db->where('qa_category_id', 0);
+      $this->db->where('item_type', $item_type);      
     }
 
     if(trim($filter_text) && $filter_text != -1)
     {
-      $this->db->where('qa_product_title LIKE "'.$filter_text.'"');
+      $this->db->where('title LIKE "'.$filter_text.'"');
     }
 
     $result = $this->db->get(self::$tableName)->result_array();
@@ -108,42 +113,42 @@ class store_items extends Model
 
   function getById($store_id, $product_id)
   {
-    $this->db->where('qa_store_id', $store_id);
+    $this->db->where('store_id', $store_id);
     $this->db->where('id', $product_id);
     $this->db->limit(1);
-    $result = $this->db->get('qa_product')->result_array();    
+    $result = $this->db->get('store_items')->result_array();    
     return ($result) ? $result[0]['id'] : null;
   }
   function checkProductReplacement($store_id, $brand_id, $category_id, $upc_code, $title, $description){
     $this->db->select('id');
-    $this->db->select('qa_product_id');
-    $this->db->where('qa_store_id', $store_id);
+   // $this->db->select('qa_product_id');
+    $this->db->where('store_id', $store_id);
 
-    if(trim($brand_id))
+   /* if(trim($brand_id))
       $this->db->where('qa_brand_id', $brand_id);
 
     if(trim($category_id))
       $this->db->where('qa_category_id', $category_id);
+    */
+    $this->db->where('id', $upc_code);
+    $this->db->where('(title != "'.$title.'" OR description != "'.$description.'")');
     
-    $this->db->where('qa_product_id', $upc_code);
-    $this->db->where('(qa_product_title != "'.$title.'" OR qa_product_description != "'.$description.'")');
-    
-    return $this->db->get('qa_product')->result_array();
+    return $this->db->get('store_items')->result_array();
 
   }
   function deleteProductById($id) {
     $this->db->where('id', $id);
-    $this->db->delete('qa_product');
+    $this->db->delete('store_items');
   }
 
   function getDetails($store_id, $product_id)
   {
     $query = "
-      SELECT s.image_option, s.vote_type, s.qa_who_can_comment, s.qa_store_name, s.qa_permission, s.moderation_type, s.video_option, s.qa_store_id,
-        p.qa_product_description as item_description, p.qa_product_title as item_name, p.qa_product_id as item_id, p.id, p.linked_id,
+      SELECT s.image_option, s.vote_type, s.qa_who_can_comment, s.qa_store_name, s.qa_permission, s.moderation_type, s.video_option, s.store_id,
+        p.description as item_description, p.title as item_name, p.id as item_id, p.id, p.linked_id,
         t.team_name, t.qa_team_id,s.qa_threshold
-      FROM qa_product p
-      INNER JOIN qa_store s ON p.qa_store_id = s.qa_store_id
+      FROM store_items p
+      INNER JOIN qa_store s ON p.store_id = s.qa_store_id
       INNER JOIN teams t ON t.qa_store_id = s.qa_store_id
       WHERE p.qa_store_id = " . $store_id . "
         AND p.id = ".mysql_escape_string($product_id);
@@ -155,41 +160,41 @@ class store_items extends Model
   function getProductByCategoryId($id,$offset = -1,$limit = -1)
   {
     $this->db->select('*');
-    $this->db->where('qa_category_id', $id);
+    $this->db->where('item_type', $id);
     if($offset != -1)
       $this->db->limit($limit, $offset);
-    $result = $this->db->get('qa_product')->result_array();            
+    $result = $this->db->get('store_items')->result_array();            
     return $result;
   }
   function getCountProductByCategoryId($id)
   {
     
-    $this->db->where('qa_category_id', $id);
-    $result = $this->db->from('qa_product');
+    $this->db->where('item_type', $id);
+    $result = $this->db->from('store_items');
     return $this->db->count_all_results();
   }
   function getProductByBrandId($id, $offset = -1, $limit = -1) {
     $this->db->select('*');
-    $this->db->where('qa_brand_id', $id);
+    $this->db->where('item_type', $id);
     if($offset != -1)
     $this->db->limit($limit, $offset);
-    $result = $this->db->get('qa_product')->result_array();
+    $result = $this->db->get('store_items')->result_array();
     
     return $result;
   }
   function getCountProductByBrandId($id){
     $this->db->select('*');
-    $this->db->where('qa_brand_id', $id);    
-    $this->db->from('qa_product');    
+    $this->db->where('item_type', $id);    
+    $this->db->from('store_items');    
     return $this->db->count_all_results();;
   }
   function getModerateProduct($store_id, $offset,$limit,$params,$sort_column = 'id', $sort_order = 'asc')
   {    
     $query = 'SELECT *
-      FROM qa_product AS p
+      FROM store_items AS p
       INNER JOIN store_item_posts AS q ON p.id = q.qa_ref_id
       WHERE q.qa_post_type = "product"
-        AND p.qa_store_id = '. $store_id;
+        AND p.store_id = '. $store_id;
       $query .= $params;
       $query .= ' GROUP BY p.id
       ORDER BY p.'.$sort_column.' '.$sort_order.
@@ -202,26 +207,23 @@ class store_items extends Model
   function updateProduct($id, $data)
   {
     $this->db->where('id',$id);
-    $this->db->update('qa_product',$data);  
+    $this->db->update('store_items',$data);  
   }
   function getProductById($store_id, $product_id)
   {
-    $this->db->where('qa_store_id', $store_id);
+    $this->db->where('store_id', $store_id);
     $this->db->where('id', $product_id);
     $this->db->limit(1);
-    $result = $this->db->get('qa_product')->result_array();
+    $result = $this->db->get('store_items')->result_array();
     return ($result) ? $result[0] : null;
   }
 
   function getAutonomousProductsCount($store_id)
   {
     $query = "
-      SELECT COUNT(qa_product_id) as CNT
-      FROM `qa_product`
-      WHERE `qa_store_id` = $store_id
-        AND qa_category_id = 0
-        AND qa_brand_id = 0
-      ";
+      SELECT COUNT(id) as CNT
+      FROM `store_items`
+      WHERE `store_id` = $store_id";
 
     $result = $this->db->query($query)->result_array();
 
@@ -231,10 +233,10 @@ class store_items extends Model
   function getAutonomousProducts($store_id)
   {
     $this->db->select('*');
-    $this->db->where('qa_store_id', $store_id);
-    $this->db->where('qa_category_id', 0);
-    $this->db->where('qa_brand_id', 0);
-    $result = $this->db->get('qa_product')->result_array();
+    $this->db->where('store_id', $store_id);
+  //  $this->db->where('qa_category_id', 0);
+  //  $this->db->where('qa_brand_id', 0);
+    $result = $this->db->get('store_items')->result_array();
 
     return $result;
   }
@@ -258,9 +260,9 @@ class store_items extends Model
   {    
     $time = date('Y-m-d H:i:s', strtotime('-5 minutes', time()));
     
-    $this->db->join('team_members as tm', 'tm.qa_user_id = qa_product.user_id AND tm.role = "creator"');
-    $this->db->where('qa_store_id', $store_id);
-    $this->db->group_by('qa_product_id');
+    $this->db->join('team_members as tm', 'tm.qa_user_id = store_items.user_id AND tm.role = "creator"');
+    $this->db->where('store_id', $store_id);
+    $this->db->group_by('id');
     $this->db->where('linked_id', 0);
     
     if($use_time)
@@ -268,7 +270,7 @@ class store_items extends Model
       //$this->db->where('created_at > "'.$time.'"'); 
     }
     
-    return $this->db->get('qa_product')->result_array();
+    return $this->db->get('store_items')->result_array();
   }
   
   /**
@@ -283,7 +285,7 @@ class store_items extends Model
     $this->db->set('linked_id', $map_id);
     $this->db->where('id', $product_id);
     
-    $this->db->update('qa_product');
+    $this->db->update('store_items');
   }
   
   /**
@@ -295,31 +297,31 @@ class store_items extends Model
    */
   function searchProduct($store_id, $search_key, $offset = 0, $limit = 10)
   {
-    $this->db->where('qa_store_id', $store_id);
-    $this->db->where('MATCH(qa_product_title) AGAINST("'.mysql_escape_string($search_key).'" IN BOOLEAN MODE)');
+    $this->db->where('store_id', $store_id);
+    $this->db->where('MATCH(title) AGAINST("'.mysql_escape_string($search_key).'" IN BOOLEAN MODE)');
     
     //$this->db->offset($offset);
     //$this->db->limit($limit);
     
-    return $this->db->get('qa_product')->result_array();
+    return $this->db->get('store_items')->result_array();
   }
   function check_product_map($association, $value,$store_id,$user_id)
   {    
     $this->db->select($association);
     $this->db->where("linked_id",0);
-    $this->db->where("qa_store_id",$store_id);    
+    $this->db->where("store_id",$store_id);    
     $this->db->where_in($association,$value);    
     $this->db->group_by($association);
-    return $this->db->get("qa_product")->result_array();
+    return $this->db->get("store_items")->result_array();
   }
   
   function getProductsByStoreId($store_id,$key)
   {    
-    $this->db->select("id, qa_product_title as Value, product_url as url");
+    $this->db->select("id, title as Value, product_url as url");
     $this->db->select("id");
-    $this->db->where("qa_store_id", $store_id);       
-    $this->db->like("qa_product_title",$key);
-    return $this->db->get("qa_product")->result_array();
+    $this->db->where("store_id", $store_id);       
+    $this->db->like("title",$key);
+    return $this->db->get("store_items")->result_array();
   }
   
 
@@ -329,7 +331,7 @@ class store_items extends Model
     
     $this->db->limit(1);
     
-    $result = $this->db->get('qa_product')->result_array();
+    $result = $this->db->get('store_items')->result_array();
     
     return ($result) ? $result[0] : null;
   }

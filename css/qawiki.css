@@ -598,3 +598,5 @@ a:hover.button span.lft_area, a:hover.button span.rgt_area, a:hover.button span.
 
 .site-error{width: 60%; margin: 40px auto}
 .site-error label.error, .site-error span.error, .site-error div.error{padding:10px; background-color: #FBD5D5; border: 1px solid #CC0000;color: #990000; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius:3px}
+.custom_dp_item_cap{text-transform:capitalize;}
+	

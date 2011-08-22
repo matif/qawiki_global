@@ -1,7 +1,6 @@
 
 <?php use_javascript('tiny_mce/jquery.tinymce.js'); ?>
 <?php use_javascript('catalog/catalog') ?>
-
 <h1 class="black head_title setting"><span class="fl">Catalog Settings</span></h1>
 <div class="clear"></div>
 <div class="row_dat mt10">
@@ -27,11 +26,11 @@
 <div class="content_dashboard noborder">
 
   <div class="cate_pan" id="productsPanel">
-    <div class="heading_section  clearfix"><div class="head nopad" style="width:auto">Products</div></div>
+    <div class="heading_section  clearfix"><div class="head nopad" style="width:auto; text-transform:capitalize;"><?php echo $items[0]['item_type']; ?></div></div>
     <div class="content_accordian">
       
       <div id="productPag_data">
-        
+
         <?php echo (isset($items)) ? $this->load->view('catalog/_items') : '' ?>
         
       </div>
@@ -45,7 +44,6 @@
               )
             )) : '';
           ?>
-
         </div>					
       </div>
 

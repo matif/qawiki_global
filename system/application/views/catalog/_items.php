@@ -1,9 +1,9 @@
 <table class="rpt_area" border="0" cellpadding="0" cellspacing="0">
   <tbody><tr>
       <th width="14">&nbsp;</th>
-      <th>Product Id</th>
-      <th>Product Title</th>
-      <th>Product Description</th>
+      <th>Item Id</th>
+      <th>Title</th>
+      <th>Description</th>
       <th>Get Code</th>
       <th>View Questions</th>
       <th>Add Question</th>
@@ -16,9 +16,9 @@
 
         <tr>
           <td>&nbsp;</td>
-          <td><?php echo $product['qa_product_id']?></td>
-          <td><?php echo $product['qa_product_title']?></td>
-          <td><?php echo $product['qa_product_description']?></td>
+          <td><?php echo $product['item_id']?></td>
+          <td><?php echo $product['title']?></td>
+          <td><?php echo $product['description']?></td>
           <td><a href="<?php echo base_url().'post/embedCode/'.$this->store_id.'/product/'.$product['id']?>">Get Code</a></td>
           <td><a href="<?php echo base_url().'moderate/index/'.$this->store_id.'/'.$product['id'].'/product'?>">View Questions</a></td>
           <td><a href="javascript:;" class="question-it" rel="<?php echo $product['id']?>/product">Add Question</a></td>

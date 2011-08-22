@@ -285,9 +285,9 @@ class Post extends qaController
    
     // save uploaded csv
     require_once(APPPATH.'libraries/qaCsv.php');
-    $product_csv = new Qa_csv($store_id, $this->uid);    
+    $product_csv = new qaCsv($store_id, $this->uid);    
     $product_csv->store_configuration();
-    $product_csv->process_row($csv_config);
+    $product_csv->process_row($csv_config, $type);
   
 
     if(!$product_csv->has_error())
@@ -316,7 +316,7 @@ class Post extends qaController
 //        redirect('post/linkProducts/' . $store_id);
 //      }
       
-      redirect('post/mapProducts/' . $store_id);
+      redirect('/catalog/index/' . $store_id);
     }
 
     $this->session->set_flashdata('error', $product_csv->get_error());
@@ -1081,7 +1081,8 @@ class Post extends qaController
     if($user_role == 'view')
       redirect('moderate/index/'.$store_id);    
 
-
+	
+print_r($_POST);
     if(trim($this->input->post("association")))
     {
       $data["association"] =  $this->input->post("association");
@@ -1089,7 +1090,8 @@ class Post extends qaController
       $filename = $this->input->post('filename');
       $cols_count = $this->input->post('cols_count');     
       $check = 0;
-      for ($i = 0; $i < $cols_count; $i++)
+
+	  for ($i = 0; $i < $cols_count; $i++)
       {
         $name = 'hid_' . $i;
         if (isset($_POST[$name]))
@@ -1099,28 +1101,31 @@ class Post extends qaController
             $check = i;
         }
       }
-      require_once(APPPATH.'libraries/qaCsv.php');
-      $product_csv = new Qacsv($store_id, $this->uid);
+	 
+
+	  require_once(APPPATH.'libraries/qaCsv.php');
+	  $product_csv = new qaCsv($store_id, $this->uid);
       $product_csv->store_configuration();
       $path = $this->config->item('csv_upload_path');
       $data['products'] = array();
       $csv_data = array();
       $previous= "";
       $arr[][][] = null;
-      if(!$product_csv->has_error())
+   
+	 
+	  if(!$product_csv->has_error())
       {
           $file = fopen($path . $filename, 'r');
           $first = true;
 
-          while ($row = fgetcsv($file, 1000, ","))
+	      while ($row = fgetcsv($file, 1000, ","))
           {            
             if($first)
             {
               $first = false;
               continue;
-            }   
-            if(strpos($temp,"category") == true || strpos($temp,"brand") == true || strpos($temp,"product") == true)
-            {
+            }
+			   
                ($previous == $row[$check])? $i++ : $i=0;
                for ($k = 0; $k < $cols_count; $k++)
                 {
@@ -1130,9 +1135,10 @@ class Post extends qaController
                 $db_data []= $row[$check];
                 $previous = $row[$check];
             }           
-          }          
+          
           $tok = explode("_", $temp);
-
+			print_r($tok);
+			die();
 		  $func_name = "check_".$tok[1]."_map"; 
 		  $id_data [] = null;
           if($tok[1] != "product")
@@ -1167,6 +1173,7 @@ class Post extends qaController
           }          
           fclose($file);
       }
+	  die();
       $data["file_name"] = $filename;
       $data["columns"] = $csv_config;
       $data["count"] = $cols_count;
