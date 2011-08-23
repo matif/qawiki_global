@@ -17,8 +17,6 @@ class qaController extends Controller
     $this->load->model('qa_login', 'users');
     
     $this->load->model('store_items', 'store_items_m');
-    $this->load->model('qa_brand', 'brand');
- //   $this->load->model('qa_catagory', 'category');
     $this->load->model('qa_teams', 'team');
     $this->load->model('qa_team_members', 'team_member');
     
